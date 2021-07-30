@@ -8,7 +8,7 @@ import * as Script from 'react-load-script';
  * 加载状态
  * @type {{}}
  */
-export type DynamicLoadScriptProps = {
+export declare type DynamicLoadScriptProps = {
 	url: string | Array<string>;
 	onLoad?: () => any;
 	onError?: (...args: any) => any;
