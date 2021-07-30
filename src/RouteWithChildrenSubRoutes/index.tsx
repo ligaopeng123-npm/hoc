@@ -17,7 +17,7 @@ export const RouteWithChildrenSubRoutes = (route: RouteProps) => {
 	return <Route
 		path={route.path}
 		exact={!!route.exact}
-		component={loadable(() => import(`../${route.component}`))}
+		component={loadable(() => import(`@/${route.component}`))}
 	/>
 };
 

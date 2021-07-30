@@ -10,8 +10,8 @@
  *
  **********************************************************************/
 import React, {useState, useEffect} from 'react';
-import RouteWithChildrenSubRoutes from "./RouteWithChildrenSubRoutes";
-import {RouteComponentProps, RouteProps, RouterProps, withRouter} from "react-router-dom";
+import RouteWithChildrenSubRoutes from "../RouteWithChildrenSubRoutes";
+import {RouteProps, RouteComponentProps, withRouter} from "react-router-dom";
 import {memoized, MemoizedFn} from "@gaopeng123/utils";
 
 /**
@@ -39,11 +39,11 @@ const pathnameFromRouters: MemoizedFn = (pathname: string, routers: Array<any>) 
 const cacheRouter = memoized(pathnameFromRouters);
 
 export declare type RouteWithModuleRoutesProps = {
-	routers: RouterProps;
+	routers: any[];
 	onRouteChange?: (route: RouteProps) => void;
 }
 
-const RouteWithModuleRoutes = (props: RouteWithModuleRoutesProps & RouteComponentProps) => {
+const RouteWithModuleRoutes: React.FC<RouteWithModuleRoutesProps & RouteComponentProps> = (props) => {
 	const [router, setRouter] = useState<RouteProps>();
 	const {routers, onRouteChange} = props;
 	const pathname = props.history.location.pathname;
@@ -55,7 +55,6 @@ const RouteWithModuleRoutes = (props: RouteWithModuleRoutesProps & RouteComponen
 		}
 	}, [pathname, routers]);
 	
-	
 	return (
 		<React.Suspense fallback={<div>loading...</div>}>
 			{
@@ -64,5 +63,4 @@ const RouteWithModuleRoutes = (props: RouteWithModuleRoutesProps & RouteComponen
 		</React.Suspense>
 	)
 };
-
 export default withRouter(RouteWithModuleRoutes);

@@ -8,7 +8,7 @@ const App = () => {
 	}
 	return (
 		<div>
-			<DynamicLoadScript url={[]} onLoad={onLoad}/>
+			<DynamicLoadScript url={['./abc.js']} onLoad={onLoad}/>
 		</div>
 	);
 };
