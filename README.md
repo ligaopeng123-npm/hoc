@@ -10,7 +10,7 @@
 <RouteWithModuleRoutes routers={[]} onRouteChange={(router: RouteProps)=> {}} />
 ```
 
-### RouteWithSubRoutes
+### RouteWithSubRoutes  拼接switch中的路由
 
 ```tsx
 <RouteWithModuleRoutes router={[]} />
