@@ -10,3 +10,6 @@ export {default as DynamicLoadScript} from "./DynamicLoadScript";
 export type { RouteWithModuleRoutesProps} from "./RouteWithModuleRoutes";
 export {default as RouteWithModuleRoutes} from "./RouteWithModuleRoutes";
 export {default as RouteWithChildrenSubRoutes} from "./RouteWithChildrenSubRoutes";
+
+export type { RouteWithSubRoutesProps} from "./RouteWithSubRoutes";
+export { default as RouteWithSubRoutes} from "./RouteWithSubRoutes";

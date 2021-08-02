@@ -9,3 +9,9 @@
 ```tsx
 <RouteWithModuleRoutes routers={[]} onRouteChange={(router: RouteProps)=> {}} />
 ```
+
+### RouteWithSubRoutes
+
+```tsx
+<RouteWithModuleRoutes router={[]} />
+```
