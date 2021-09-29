@@ -2,14 +2,19 @@
  * 动态加载js文件
  */
 
-export type {DynamicLoadScriptProps} from "./DynamicLoadScript";
+export {DynamicLoadScriptProps} from "./DynamicLoadScript";
 export {default as DynamicLoadScript} from "./DynamicLoadScript";
 /**
  * 路由相关高阶组件
  */
-export type { RouteWithModuleRoutesProps} from "./RouteWithModuleRoutes";
+export {RouteWithModuleRoutesProps} from "./RouteWithModuleRoutes";
 export {default as RouteWithModuleRoutes} from "./RouteWithModuleRoutes";
 export {default as RouteWithChildrenSubRoutes} from "./RouteWithChildrenSubRoutes";
 
-export type { RouteWithSubRoutesProps} from "./RouteWithSubRoutes";
-export { default as RouteWithSubRoutes} from "./RouteWithSubRoutes";
+export {RouteWithSubRoutesProps} from "./RouteWithSubRoutes";
+export {default as RouteWithSubRoutes} from "./RouteWithSubRoutes";
+
+/**
+ * 路由预加载
+ */
+export {default as Prefetch} from "./Prefetch";

@@ -15,17 +15,18 @@ import {RouteProps} from "react-router-dom";
 import RouteWithChildrenSubRoutes from "../RouteWithChildrenSubRoutes";
 
 export declare type RouteWithSubRoutesProps = {
-	router: RouteProps;
+    router: RouteProps;
 }
 const RouteWithSubRoutes = (props: RouteWithSubRoutesProps) => {
-	const {router} = props;
-	if (router.children) {
-		const children = (router.children as Array<RouteProps>).map((item: RouteProps) => {
-			return RouteWithChildrenSubRoutes(item);
-		});
-		return children;
-	} else {
-		return RouteWithChildrenSubRoutes(router);
-	}
+    // @ts-ignore
+    const {router} = props;
+    if (router.children) {
+        const children = (router.children as Array<RouteProps>).map((item: RouteProps) => {
+            return RouteWithChildrenSubRoutes(item);
+        });
+        return children;
+    } else {
+        return RouteWithChildrenSubRoutes(router);
+    }
 };
 export default RouteWithSubRoutes;

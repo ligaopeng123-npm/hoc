@@ -15,3 +15,8 @@
 ```tsx
 <RouteWithModuleRoutes router={[]} />
 ```
+### Prefetch 路由预加载 将传入路由文件 预先加载
+
+```typescript
+Prefetch(routers: Array<Router>);
+```

@@ -10,15 +10,17 @@
  *
  **********************************************************************/
 import React from 'react';
+// @ts-ignore
 import loadable from "@loadable/component";
 import {Route, RouteProps} from "react-router-dom";
+import {RrefetchRoute} from "../typing";
 
-export const RouteWithChildrenSubRoutes = (route: RouteProps) => {
-	return <Route
-		path={route.path}
-		exact={!!route.exact}
-		component={loadable(() => import(`@/${route.component}`))}
-	/>
+export const RouteWithChildrenSubRoutes = (route: RouteProps & RrefetchRoute) => {
+    return <Route
+        path={route.path}
+        exact={!!route.exact}
+        component={route?.prefetchComponent || loadable(() => import(`@/${route.component}`))}
+    />
 };
 
 export default RouteWithChildrenSubRoutes;

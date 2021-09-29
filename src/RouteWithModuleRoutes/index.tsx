@@ -10,9 +10,11 @@
  *
  **********************************************************************/
 import React, {useState, useEffect} from 'react';
-import RouteWithChildrenSubRoutes from "../RouteWithChildrenSubRoutes";
 import {RouteProps, RouteComponentProps, withRouter} from "react-router-dom";
 import {memoized, MemoizedFn} from "@gaopeng123/utils";
+import Prefetch from '../Prefetch';
+import RouteWithChildrenSubRoutes from "../RouteWithChildrenSubRoutes";
+import {RrefetchRoute} from "../typing";
 
 /**
  * 递归匹配路由
@@ -20,47 +22,55 @@ import {memoized, MemoizedFn} from "@gaopeng123/utils";
  * @param pathname
  */
 const pathnameFromRouters: MemoizedFn = (pathname: string, routers: Array<any>) => {
-	if (routers) {
-		for (let route of routers) {
-			const {path, children} = route;
-			if (path === pathname) {
-				return route;
-			} else {
-				const state: any = pathnameFromRouters(pathname, children);
-				if (state) return state;
-			}
-		}
-	}
+    if (routers) {
+        for (let route of routers) {
+            // @ts-ignore
+            const {path, children} = route;
+            if (path === pathname) {
+                /**
+                 * 预加载策略 将同级路由和当前子级路由全部加载
+                 */
+                Prefetch(routers.filter((r) => route !== r).concat(route?.children || []));
+                return route;
+            } else {
+                const state: any = pathnameFromRouters(pathname, children);
+                if (state) return state;
+            }
+        }
+    }
 };
 
 /**
  * 缓存路由
  */
 const cacheRouter = memoized(pathnameFromRouters);
-
+/**
+ * 暴露入口
+ */
 export declare type RouteWithModuleRoutesProps = {
-	routers: any[];
-	onRouteChange?: (route: RouteProps) => void;
+    routers: any[];
+    onRouteChange?: (route: RouteProps & RrefetchRoute) => void;
 }
 
 const RouteWithModuleRoutes: React.FC<RouteWithModuleRoutesProps & RouteComponentProps> = (props) => {
-	const [router, setRouter] = useState<RouteProps>();
-	const {routers, onRouteChange} = props;
-	const pathname = props.history.location.pathname;
-	useEffect(() => {
-		if (pathname && pathname !== '/') {
-			const route = cacheRouter(pathname, routers)[0];
-			route && setRouter(route);
-			route && onRouteChange && onRouteChange(route);
-		}
-	}, [pathname, routers]);
-	
-	return (
-		<React.Suspense fallback={<div>loading...</div>}>
-			{
-				router ? <RouteWithChildrenSubRoutes {...router}/> : <span>页面加载错误</span>
-			}
-		</React.Suspense>
-	)
+    const [router, setRouter] = useState<RouteProps & RrefetchRoute>();
+    const {routers, onRouteChange} = props;
+    const pathname = props.history.location.pathname;
+    useEffect(() => {
+        if (pathname && pathname !== '/') {
+            const route = cacheRouter(pathname, routers)[0];
+            route && setRouter(route);
+            route && onRouteChange && onRouteChange(route);
+        }
+    }, [pathname, routers]);
+
+    return (
+        // @ts-ignore
+        <React.Suspense fallback={<div>loading...</div>}>
+            {
+                router ? <RouteWithChildrenSubRoutes {...router}/> : <span>页面加载错误</span>
+            }
+        </React.Suspense>
+    )
 };
 export default withRouter(RouteWithModuleRoutes);
