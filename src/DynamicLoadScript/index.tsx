@@ -19,6 +19,8 @@ const DynamicLoadScript: React.FC<DynamicLoadScriptProps> = (props) => {
 	const {onLoad, onCreate, onError, url} = props;
 	const [loadedBase, setLoadedBase] = useState<any>({});
 	const Url = typeof url === 'string' ? [url] : url;
+	// 当前加载完成的url
+	const [currentLoadedUrl, setCurrentLoadedUrl] = useState<string>('');
 	
 	/**
 	 * 根据加载此处 等加载完成后 执行onLoad
@@ -36,8 +38,14 @@ const DynamicLoadScript: React.FC<DynamicLoadScriptProps> = (props) => {
 	}, [loadedBase]);
 	
 	const _onLoad = (_url: string) => {
-		setLoadedBase(Object.assign({}, loadedBase, {[_url]: true}));
+		setCurrentLoadedUrl(_url);
 	};
+	
+	useEffect(() => {
+		if (currentLoadedUrl) {
+			setLoadedBase(Object.assign({}, loadedBase, {[currentLoadedUrl]: true}));
+		}
+	}, [currentLoadedUrl]);
 	
 	return (
 		<React.Fragment>
