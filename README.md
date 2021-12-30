@@ -6,8 +6,16 @@
 
 ### RouteWithModuleRoutes  动态匹配路由 模块统一放在pages目录下
 
+```typescript
+export declare type RouteWithModuleRoutesProps = {
+    routers: any[];
+    onRouteChange?: (route: RouteProps & RrefetchRoute) => void;
+    isVite?: boolean; // 是否使用vite模式
+}
+```
+
 ```tsx
-<RouteWithModuleRoutes routers={[]} onRouteChange={(router: RouteProps)=> {}} />
+<RouteWithModuleRoutes isVite={false} routers={[]} onRouteChange={(router: RouteProps)=> {}} />
 ```
 
 ### RouteWithSubRoutes  拼接switch中的路由

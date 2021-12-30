@@ -15,11 +15,30 @@ import loadable from "@loadable/component";
 import {Route, RouteProps} from "react-router-dom";
 import {RrefetchRoute} from "../typing";
 
+/**
+ * 异步加载资源 处理vite动态加载
+ * @param imports
+ * @param reg
+ */
+export const getAsyncPages = (imports: Record<string, () => Promise<any>>, reg: RegExp) => {
+    return (Object.keys(imports)
+        .map((key) => {
+            const names = reg.exec(key);
+            return Array.isArray(names) && names.length >= 2
+                ? {[names[1]]: imports[key]}
+                : undefined;
+        })
+        .filter((m) => !!m)
+        .reduce((o, n) => ({...o, ...n}), []) as unknown) as Record<string, () => Promise<any>>;
+}
+
 export const RouteWithChildrenSubRoutes = (route: RouteProps & RrefetchRoute) => {
+    const isVite = route.isVite;
     return <Route
         path={route.path}
         exact={!!route.exact}
-        component={route?.prefetchComponent || loadable(() => import(`@/${route.component}`))}
+        // @ts-ignore
+        component={route?.prefetchComponent || loadable(() => isVite ? import(/* @vite-ignore */ `../../${route.component}`) : import(`@/${route.component}`))}
     />
 };
 
