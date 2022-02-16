@@ -11,7 +11,7 @@
  **********************************************************************/
 import React, {useState, useEffect} from 'react';
 import {RouteProps, RouteComponentProps, withRouter} from "react-router-dom";
-import {memoized, MemoizedFn} from "@gaopeng123/utils";
+import {memoized, MemoizedFn} from "@gaopeng123/utils.function";
 import Prefetch from '../Prefetch';
 import RouteWithChildrenSubRoutes from "../RouteWithChildrenSubRoutes";
 import {RrefetchRoute} from "../typing";

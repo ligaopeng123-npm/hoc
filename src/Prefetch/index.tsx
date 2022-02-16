@@ -11,7 +11,8 @@
  **********************************************************************/
 // @ts-ignore
 import loadable from '@loadable/component';
-import {isArray} from "@gaopeng123/utils";
+import {isArray} from "@gaopeng123/utils.types";
+import {addWebpackAliasPath} from "../addWebpackAliasPath";
 
 /**
  * 预加载策略
@@ -32,7 +33,7 @@ const Prefetch = () => {
                 // 将已经加载的资源 绑定到prefetchComponent属性上
                 // 渲染时 如果该属性有值 则不在加载
                 route.prefetchComponent = loadable(() =>
-                    import(/* webpackPrefetch: true */ `@/${route.component}`),
+                    import(/* webpackPrefetch: true */ `@pages/${addWebpackAliasPath(route.component)}`),
                 );
                 // 将加载的资源路径保存为真
                 loaded[route.component] = true;

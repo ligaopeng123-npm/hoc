@@ -14,6 +14,7 @@ import React from 'react';
 import loadable from "@loadable/component";
 import {Route, RouteProps} from "react-router-dom";
 import {RrefetchRoute} from "../typing";
+import {addWebpackAliasPath} from "../addWebpackAliasPath";
 
 /**
  * 异步加载资源 处理vite动态加载
@@ -38,7 +39,7 @@ export const RouteWithChildrenSubRoutes = (route: RouteProps & RrefetchRoute) =>
         path={route.path}
         exact={!!route.exact}
         // @ts-ignore
-        component={route?.prefetchComponent || loadable(() => isVite ? import(/* @vite-ignore */ `../../${route.component}`) : import(`@/${route.component}`))}
+        component={route?.prefetchComponent || loadable(() => isVite ? import(/* @vite-ignore */ `../../${route.component}`) : import( /* webpackPrefetch: true */ `@pages/${addWebpackAliasPath(route.component)}`))}
     />
 };
 
