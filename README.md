@@ -4,7 +4,7 @@
 <DynamicLoadScript url={['/js/**.js']} onLoad={()=> {}}/>
 ```
 
-### RouteWithModuleRoutes  动态匹配路由 模块统一放在pages目录下
+### RouteWithModuleRoutes  动态匹配路由 模块统一放在pages目录下，并且需要配置alias为@pages
 
 ```typescript
 export declare type RouteWithModuleRoutesProps = {
