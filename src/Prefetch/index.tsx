@@ -2,17 +2,16 @@
  *
  * @模块名称: Prefetch
  *
- * @模块作用: 预加载策略
+ * @模块作用: 预加载策略  todo webpackPrefetch: true webpack5不好用 目前先废弃 后续研究
  *
  * @创建人: pgli
  *
  * @date: 2021/9/29 11:44
  *
  **********************************************************************/
-// @ts-ignore
-import loadable from '@loadable/component';
 import {isArray} from "@gaopeng123/utils.types";
 import {addWebpackAliasPath} from "../addWebpackAliasPath";
+import React from "react";
 
 /**
  * 预加载策略
@@ -32,8 +31,8 @@ const Prefetch = () => {
             if (route?.component && !loaded[route?.component]) {
                 // 将已经加载的资源 绑定到prefetchComponent属性上
                 // 渲染时 如果该属性有值 则不在加载
-                route.prefetchComponent = loadable(() =>
-                    import(/* webpackPrefetch: true */ `@pages/${addWebpackAliasPath(route.component)}`),
+                route.prefetchComponent = React.lazy(() =>
+                    import(`@pages/${addWebpackAliasPath(route.component)}`),
                 );
                 // 将加载的资源路径保存为真
                 loaded[route.component] = true;

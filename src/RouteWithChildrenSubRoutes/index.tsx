@@ -2,7 +2,7 @@
  *
  * @模块名称: RouteWithChildrenSubRoutes
  *
- * @模块用途: RouteWithChildrenSubRoutes
+ * @模块用途: RouteWithChildrenSubRoutes  todo webpackPrefetch: true webpack5不好用 目前先废弃 后续研究
  *
  * @创建人: pgli
  *
@@ -10,9 +10,7 @@
  *
  **********************************************************************/
 import React from 'react';
-// @ts-ignore
-import loadable from "@loadable/component";
-import {Route, RouteProps} from "react-router-dom";
+import {RouteProps} from "react-router-dom";
 import {RrefetchRoute} from "../typing";
 import {addWebpackAliasPath} from "../addWebpackAliasPath";
 
@@ -34,13 +32,13 @@ export const getAsyncPages = (imports: Record<string, () => Promise<any>>, reg: 
 }
 
 export const RouteWithChildrenSubRoutes = (route: RouteProps & RrefetchRoute) => {
-    const isVite = route.isVite;
-    return <Route
-        path={route.path}
-        exact={!!route.exact}
-        // @ts-ignore
-        component={route?.prefetchComponent || loadable(() => isVite ? import(/* @vite-ignore */ `../../${route.component}`) : import( /* webpackPrefetch: true */ `@pages/${addWebpackAliasPath(route.component)}`))}
-    />
+    // @ts-ignore
+    const LazyCompoent = React.lazy(() => import(`@pages/${addWebpackAliasPath(route.component)}`))
+    return (
+        <React.Suspense fallback={<div>loading...</div>}>
+            <LazyCompoent/>
+        </React.Suspense>
+    )
 };
 
 export default RouteWithChildrenSubRoutes;

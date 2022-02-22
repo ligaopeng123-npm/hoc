@@ -9,8 +9,8 @@
  * @date: 2021/7/30 8:14
  *
  **********************************************************************/
-import React, {useState, useEffect} from 'react';
-import {RouteProps, RouteComponentProps, withRouter} from "react-router-dom";
+import React, {useState, useEffect, Fragment} from 'react';
+import {RouteProps, useLocation} from "react-router-dom";
 import {memoized, MemoizedFn} from "@gaopeng123/utils.function";
 import Prefetch from '../Prefetch';
 import RouteWithChildrenSubRoutes from "../RouteWithChildrenSubRoutes";
@@ -55,10 +55,11 @@ export declare type RouteWithModuleRoutesProps = {
     isVite?: boolean; // 是否使用vite模式
 }
 
-const RouteWithModuleRoutes: React.FC<RouteWithModuleRoutesProps & RouteComponentProps> = (props) => {
+const RouteWithModuleRoutes: React.FC<RouteWithModuleRoutesProps> = (props) => {
     const [router, setRouter] = useState<RouteProps & RrefetchRoute>();
     const {routers, onRouteChange} = props;
-    const pathname = props.history.location.pathname;
+    const location = useLocation();
+    const pathname = location.pathname;
     const isVite = props.isVite;
     useEffect(() => {
         if (pathname && pathname !== '/') {
@@ -69,12 +70,11 @@ const RouteWithModuleRoutes: React.FC<RouteWithModuleRoutesProps & RouteComponen
     }, [pathname, routers]);
 
     return (
-        // @ts-ignore
-        <React.Suspense fallback={<div>loading...</div>}>
+        <Fragment>
             {
                 router ? <RouteWithChildrenSubRoutes {...router} isVite={isVite}/> : <span>页面加载错误</span>
             }
-        </React.Suspense>
+        </Fragment>
     )
 };
-export default withRouter(RouteWithModuleRoutes);
+export default RouteWithModuleRoutes;

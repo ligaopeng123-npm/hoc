@@ -11,12 +11,12 @@
  **********************************************************************/
 export const addWebpackAliasPath = (comPath: string): string => {
     if (comPath?.startsWith('/pages')) {
-        return /* webpackPrefetch: true */ comPath.replace('/pages/', '');
+        return comPath.replace('/pages/', '');
     } else if (comPath?.startsWith('pages')) {
-        return /* webpackPrefetch: true */ comPath.replace('pages/', '');
+        return comPath.replace('pages/', '');
     } else if (comPath?.startsWith('/')) {
-        return /* webpackPrefetch: true */ comPath.replace('/', '');
+        return comPath.replace('/', '');
     } else {
-        return /* webpackPrefetch: true */ comPath;
+        return comPath;
     }
 }

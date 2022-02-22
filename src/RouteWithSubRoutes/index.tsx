@@ -9,8 +9,6 @@
  * @date: 2021/8/2 18:20
  *
  **********************************************************************/
-// @ts-ignore
-import React from 'react';
 import {RouteProps} from "react-router-dom";
 import RouteWithChildrenSubRoutes from "../RouteWithChildrenSubRoutes";
 
