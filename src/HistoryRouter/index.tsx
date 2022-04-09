@@ -9,7 +9,7 @@
  * @date: 2022/4/9 19:08
  *
  **********************************************************************/
-import React from 'react';
+import {createElement, useLayoutEffect, useState} from 'react';
 import {createBrowserHistory} from 'history';
 import {Router} from 'react-router-dom';
 
@@ -19,15 +19,17 @@ interface HistoryRouterProps {
     history: typeof history;
 }
 
-export const HistoryRouter: React.FC<HistoryRouterProps> = ({history, children}) => {
-    const [state, setState] = React.useState({
+const HistoryRouter: React.FC<HistoryRouterProps> = ({history, children}) => {
+    const [state, setState] = useState({
         action: history.action,
         location: history.location
     });
 
-    React.useLayoutEffect(() => {
+    useLayoutEffect(() => {
         history.listen(setState);
     }, [history]);
 
-    return React.createElement(Router, Object.assign({children, navigator: history}, state));
+    return createElement(Router, Object.assign({children, navigator: history}, state));
 };
+
+export default HistoryRouter;

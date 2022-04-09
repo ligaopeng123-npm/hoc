@@ -36,3 +36,29 @@ export declare type RouteWithModuleRoutesProps = {
 ```typescript
 Prefetch(routers: Array<Router>);
 ```
+
+## HistoryRouter
+
+`包裹路由，传递history，处理react-route v6路由外跳转`
+
+```tsx
+<HistoryRouter history={BrowserHistory}>
+    <Routes>
+        {/*登录页*/}
+        <Route path="/login" element={<UserLayout/>}/>
+        {/*404*/}
+        <Route path="/404" element={<div>404</div>}/>
+        {/*业务业务*/}
+        <Route path="*" element={<BasicLayout/>}/>
+    </Routes>
+</HistoryRouter>
+```
+
+## changeRouteTitle
+
+`根据路由配置 更改document title`
+
+```tsx
+changeRouteTitle([{name: '登录', path: '/login'}, {name: '404', path: '/404'}], '某某管理系统');
+```
+
