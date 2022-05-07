@@ -35,7 +35,15 @@ export const RouteWithChildrenSubRoutes = (route: RouteProps & RrefetchRoute) =>
     // @ts-ignore
     const LazyCompoent = React.lazy(() => import(`@pages/${addWebpackAliasPath(route.component)}`))
     return (
-        <React.Suspense fallback={<div>loading...</div>}>
+        <React.Suspense fallback={
+            route.loading === false
+                ? <div></div>
+                : <div>{
+                    route.loading === true
+                        ? 'loading...'
+                        : route.loading
+                }</div>
+        }>
             <LazyCompoent/>
         </React.Suspense>
     )

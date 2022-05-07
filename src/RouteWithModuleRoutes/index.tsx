@@ -9,7 +9,7 @@
  * @date: 2021/7/30 8:14
  *
  **********************************************************************/
-import React, {useState, useEffect, Fragment} from 'react';
+import React, {useState, useEffect, Fragment, ReactNode} from 'react';
 import {RouteProps, useLocation} from "react-router-dom";
 import {memoized, MemoizedFn} from "@gaopeng123/utils.function";
 import Prefetch from '../Prefetch';
@@ -53,6 +53,7 @@ export declare type RouteWithModuleRoutesProps = {
     routers: any[];
     onRouteChange?: (route: RouteProps & RrefetchRoute) => void;
     isVite?: boolean; // 是否使用vite模式
+    loading?: boolean | ReactNode; // 是否使用loading效果  false不使用 true使用默认的 也可传递组件
 }
 
 const RouteWithModuleRoutes: React.FC<RouteWithModuleRoutesProps> = (props) => {
@@ -61,6 +62,7 @@ const RouteWithModuleRoutes: React.FC<RouteWithModuleRoutesProps> = (props) => {
     const location = useLocation();
     const pathname = location.pathname;
     const isVite = props.isVite;
+    const loading = props.loading;
     useEffect(() => {
         if (pathname && pathname !== '/') {
             const route = cacheRouter(pathname, routers, isVite)[0];
@@ -72,7 +74,8 @@ const RouteWithModuleRoutes: React.FC<RouteWithModuleRoutesProps> = (props) => {
     return (
         <Fragment>
             {
-                router ? <RouteWithChildrenSubRoutes {...router} isVite={isVite}/> : <span>页面加载错误</span>
+                router ? <RouteWithChildrenSubRoutes {...router} loading={loading} isVite={isVite}/> :
+                    <span>页面加载错误</span>
             }
         </Fragment>
     )

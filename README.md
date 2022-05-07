@@ -15,6 +15,7 @@ export declare type RouteWithModuleRoutesProps = {
     routers: any[];
     onRouteChange?: (route: RouteProps & RrefetchRoute) => void;
     isVite?: boolean; // 是否使用vite模式
+    loading?: boolean | ReactNode; // 是否使用loading效果  false不使用 true使用默认的 也可传递组件
 }
 ```
 
