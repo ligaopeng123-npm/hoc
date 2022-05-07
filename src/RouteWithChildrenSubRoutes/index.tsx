@@ -32,11 +32,10 @@ export const getAsyncPages = (imports: Record<string, () => Promise<any>>, reg: 
 }
 
 export const RouteWithChildrenSubRoutes = (route: RouteProps & RrefetchRoute) => {
-    // @ts-ignore
-    const LazyCompoent = React.lazy(() => import(`@pages/${addWebpackAliasPath(route.component)}`))
+    const LazyComponent = React.lazy(() => route.prefetchComponent || import(`@pages/${addWebpackAliasPath(route.component)}`));
     return (
         <React.Suspense fallback={
-            route.loading === false
+            !route.loading
                 ? <div></div>
                 : <div>{
                     route.loading === true
@@ -44,7 +43,7 @@ export const RouteWithChildrenSubRoutes = (route: RouteProps & RrefetchRoute) =>
                         : route.loading
                 }</div>
         }>
-            <LazyCompoent/>
+            <LazyComponent/>
         </React.Suspense>
     )
 };
