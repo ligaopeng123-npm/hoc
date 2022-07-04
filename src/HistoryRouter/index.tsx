@@ -29,6 +29,7 @@ const HistoryRouter: React.FC<HistoryRouterProps> = ({history, children}) => {
         history.listen(setState);
     }, [history]);
 
+    // @ts-ignore
     return createElement(Router, Object.assign({children, navigator: history}, state));
 };
 
