@@ -1,6 +1,6 @@
 # 高阶函数
 
-> react-router-dom v5版本
+> react-router-dom v6版本
 
 ## DynamicLoadScript
 
