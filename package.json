@@ -1,5 +1,5 @@
 {
-    "version": "0.2.8",
+    "version": "0.2.9",
     "license": "MIT",
     "main": "dist/index.js",
     "typings": "dist/index.d.ts",
@@ -14,7 +14,7 @@
     "scripts": {
         "start": "tsdx watch",
         "build": "tsdx build",
-        "push": "npm publish --access public",
+        "push": "npm publish --access public  --tag rv5",
         "test": "tsdx test --passWithNoTests",
         "lint": "tsdx lint",
         "prepare": "tsdx build",
