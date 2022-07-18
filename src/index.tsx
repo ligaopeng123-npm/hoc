@@ -19,10 +19,6 @@ export {default as RouteWithSubRoutes} from "./RouteWithSubRoutes";
  */
 export {default as Prefetch} from "./Prefetch";
 /**
- * 路由外加载 包裹函数
- */
-export {default as HistoryRouter} from "./HistoryRouter";
-/**
  * 根据路由设置document title
  */
 export {default as changeRouteTitle} from "./ChangeRouteTitle";
