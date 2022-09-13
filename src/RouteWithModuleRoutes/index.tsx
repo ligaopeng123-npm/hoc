@@ -9,12 +9,12 @@
  * @date: 2021/7/30 8:14
  *
  **********************************************************************/
-import React, {useState, useEffect, Fragment, ReactNode} from 'react';
-import {RouteProps, useLocation} from "react-router-dom";
-import {memoized, MemoizedFn} from "@gaopeng123/utils.function";
+import React, { useState, useEffect, Fragment, ReactNode } from 'react';
+import { RouteProps, useLocation } from "react-router-dom";
+import { memoized, MemoizedFn } from "@gaopeng123/utils.function";
 import Prefetch from '../Prefetch';
 import RouteWithChildrenSubRoutes from "../RouteWithChildrenSubRoutes";
-import {RrefetchRoute} from "../typing";
+import { RrefetchRoute } from "../typing";
 
 /**
  * 递归匹配路由
@@ -57,6 +57,7 @@ export declare type RouteWithModuleRoutesProps = {
 }
 
 const RouteWithModuleRoutes: React.FC<RouteWithModuleRoutesProps> = (props) => {
+    const [loadError, setLoadError] = useState<string>('');
     const [router, setRouter] = useState<RouteProps & RrefetchRoute>();
     const {routers, onRouteChange} = props;
     const location = useLocation();
@@ -66,8 +67,12 @@ const RouteWithModuleRoutes: React.FC<RouteWithModuleRoutesProps> = (props) => {
     useEffect(() => {
         if (pathname && pathname !== '/') {
             const route = cacheRouter(pathname, routers, isVite)[0];
-            route && setRouter(route);
-            route && onRouteChange && onRouteChange(route);
+            if (route) {
+                route && setRouter(route);
+                route && onRouteChange && onRouteChange(route);
+            } else {
+                setLoadError('页面加载失败 404!');
+            }
         }
     }, [pathname, routers]);
 
@@ -75,7 +80,7 @@ const RouteWithModuleRoutes: React.FC<RouteWithModuleRoutesProps> = (props) => {
         <Fragment>
             {
                 router ? <RouteWithChildrenSubRoutes {...router} loading={loading} isVite={isVite}/> :
-                    <span>页面加载错误</span>
+                    <span>{loadError}</span>
             }
         </Fragment>
     )

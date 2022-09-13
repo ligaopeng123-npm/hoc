@@ -9,9 +9,9 @@
  * @date: 2022/4/9 19:08
  *
  **********************************************************************/
-import {createElement, useLayoutEffect, useState} from 'react';
-import {createBrowserHistory} from 'history';
-import {Router} from 'react-router-dom';
+import { createElement, useLayoutEffect, useState } from 'react';
+import { createBrowserHistory } from 'history';
+import { Router } from 'react-router-dom';
 
 export const history = createBrowserHistory();
 
@@ -26,6 +26,7 @@ const HistoryRouter: React.FC<HistoryRouterProps> = ({history, children}) => {
     });
 
     useLayoutEffect(() => {
+        // @ts-ignore
         history.listen(setState);
     }, [history]);
 
