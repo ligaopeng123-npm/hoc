@@ -12,49 +12,35 @@
 import React, { useState, useEffect } from 'react';
 import { RouteProps, useLocation } from "react-router-dom";
 import RouteWithChildrenSubRoutes from "../RouteWithChildrenSubRoutes";
-import KeepAlive, { AliveScope, useAliveController } from 'react-activation';
+import KeepAlive, { useAliveController, AliveScope } from 'react-activation';
 import { RouteWithModuleRoutesProps, RrefetchRoute, SingleRouterProps } from "../typing";
 import { cacheRouter } from "../addWebpackAliasPath";
+import { PrefetchLazyComponent } from "../Prefetch";
 
-/**
- * 单个路由
- * @constructor
- */
-const SingleRouter = ({router, loading, loadError, isVite}: SingleRouterProps) => {
-    return (
-        <>
-            {
-                router ? <RouteWithChildrenSubRoutes {...router} loading={loading} isVite={isVite}/> :
-                    <span>{loadError}</span>
-            }
-        </>
-    )
-}
 /**
  * 缓存路由
  * @constructor
  */
-const KeepAliveRouter = ({router, loading, loadError, isVite, keepAlive}: SingleRouterProps) => {
+const KeepAliveRouter = ({router, loading, isVite, keepAlive}: SingleRouterProps) => {
     return (
         <AliveScope>
-            <KeepAlive when={keepAlive === 'auto' ? !router?.hideInMenu : true} id={`${router?.path}`}
-                       cacheKey={`${router?.path}`}>
-                <SingleRouter router={router} loading={loading} loadError={loadError} isVite={isVite}/>
+            <KeepAlive when={keepAlive === 'auto' ? !router?.hideInMenu : true} id={`${router?.path}`}>
+                <RouteWithChildrenSubRoutes {...router} loading={loading} isVite={isVite}/>
             </KeepAlive>
         </AliveScope>
     )
 }
 
 const RouteWithModuleRoutes: React.FC<RouteWithModuleRoutesProps> = (props) => {
-    /**
-     * 加载错误状态
-     */
-    const [loadError, setLoadError] = useState<string>('');
+    const {routers, onRouteChange, loading, isVite, keepAlive, uninstallKeepAliveKeys} = props;
     /**
      * 当前加载路由
      */
     const [router, setRouter] = useState<RouteProps & RrefetchRoute>();
-    const {routers, onRouteChange, loading, isVite, keepAlive, uninstallKeepAliveKeys} = props;
+    /**
+     * 加载错误状态
+     */
+    const [loadError, setLoadError] = useState<any>(loading === true ? 'loading' : loading);
     const location = useLocation();
     /**
      * 获取参数
@@ -69,6 +55,7 @@ const RouteWithModuleRoutes: React.FC<RouteWithModuleRoutesProps> = (props) => {
         if (pathname && pathname !== '/') {
             const route = cacheRouter(pathname, routers, isVite)[0];
             if (route) {
+                setLoadError('');
                 route && setRouter(route);
                 route && onRouteChange && onRouteChange(route);
             } else {
@@ -87,6 +74,7 @@ const RouteWithModuleRoutes: React.FC<RouteWithModuleRoutesProps> = (props) => {
         if (uninstallKeepAliveKeys?.length) {
             for (const uninstallKeepAliveKey of uninstallKeepAliveKeys) {
                 drop(uninstallKeepAliveKey);
+                PrefetchLazyComponent.del(uninstallKeepAliveKey)
             }
         }
     }, [uninstallKeepAliveKeys]);
@@ -94,11 +82,13 @@ const RouteWithModuleRoutes: React.FC<RouteWithModuleRoutesProps> = (props) => {
     return (
         <>
             {
-                _keepAlive !== 'not'
-                    ? <KeepAliveRouter
-                        keepAlive={_keepAlive}
-                        router={router} loading={loading} loadError={loadError} isVite={isVite}/>
-                    : <SingleRouter router={router} loading={loading} loadError={loadError} isVite={isVite}/>
+                !router
+                    ? <div>{loadError}</div>
+                    : _keepAlive !== 'not'
+                        ? <KeepAliveRouter
+                            keepAlive={_keepAlive}
+                            router={router} loading={loading} loadError={loadError} isVite={isVite}/>
+                        : <RouteWithChildrenSubRoutes {...router} loading={loading} isVite={isVite}/>
             }
         </>
     )

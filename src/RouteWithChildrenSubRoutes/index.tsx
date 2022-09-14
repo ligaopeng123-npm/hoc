@@ -13,6 +13,7 @@ import React from 'react';
 import { RouteProps } from "react-router-dom";
 import { RrefetchRoute } from "../typing";
 import { addWebpackAliasPath, autoComponents } from "../addWebpackAliasPath";
+import { PrefetchLazyComponent } from "../Prefetch";
 
 /**
  * 异步加载资源 处理vite动态加载
@@ -32,17 +33,24 @@ export const getAsyncPages = (imports: Record<string, () => Promise<any>>, reg: 
 }
 
 export const RouteWithChildrenSubRoutes = (route: RouteProps & RrefetchRoute) => {
-    const LazyComponent = React.lazy(() => route.prefetchComponent || import(`@pages/${addWebpackAliasPath(autoComponents(route))}`));
+    const _path = route?.path as string;
+    if (!PrefetchLazyComponent.get(_path)) {
+        PrefetchLazyComponent.add(_path, React.lazy(() => route.prefetchComponent || import(`@pages/${addWebpackAliasPath(autoComponents(route))}`)));
+    }
+    const LazyComponent = PrefetchLazyComponent.get(_path);
     return (
-        <React.Suspense fallback={
-            !route.loading
-                ? <div></div>
-                : <div>{
-                    route.loading === true
-                        ? 'loading...'
-                        : route.loading
-                }</div>
-        }>
+        <React.Suspense
+            fallback={
+                !route.loading
+                    ? null
+                    : <div>
+                        {
+                            route.loading === true
+                                ? 'loading...'
+                                : route.loading
+                        }
+                    </div>
+            }>
             <LazyComponent/>
         </React.Suspense>
     )

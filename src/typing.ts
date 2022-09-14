@@ -10,7 +10,6 @@ export type RrefetchRoute = {
     hideInMenu?: boolean; // 是否隐藏改菜单
 }
 
-
 /**
  * 暴露入口
  */
@@ -31,7 +30,7 @@ export declare type RouteWithModuleRoutesProps = {
 }
 
 export type SingleRouterProps = {
-    router?: RouteProps & RrefetchRoute;
+    router: RouteProps & RrefetchRoute;
     loading?: boolean | ReactNode;
     loadError?: string;
     isVite?: boolean;
