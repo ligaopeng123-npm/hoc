@@ -12,8 +12,7 @@
 import React from 'react';
 import { RouteProps } from "react-router-dom";
 import { RrefetchRoute } from "../typing";
-import { addWebpackAliasPath } from "../addWebpackAliasPath";
-import { isMobile } from "@gaopeng123/utils.types";
+import { addWebpackAliasPath, autoComponents } from "../addWebpackAliasPath";
 
 /**
  * 异步加载资源 处理vite动态加载
@@ -33,7 +32,7 @@ export const getAsyncPages = (imports: Record<string, () => Promise<any>>, reg: 
 }
 
 export const RouteWithChildrenSubRoutes = (route: RouteProps & RrefetchRoute) => {
-    const LazyComponent = React.lazy(() => route.prefetchComponent || import(`@pages/${addWebpackAliasPath(isMobile() ?( route.mComponent || route.component) : route.component)}`));
+    const LazyComponent = React.lazy(() => route.prefetchComponent || import(`@pages/${addWebpackAliasPath(autoComponents(route))}`));
     return (
         <React.Suspense fallback={
             !route.loading

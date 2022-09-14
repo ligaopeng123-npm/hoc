@@ -9,6 +9,9 @@
  * @版权所有: pgli
  *
  **********************************************************************/
+import { RrefetchRoute } from "./typing";
+import { isMobile } from "@gaopeng123/utils.types";
+
 export const addWebpackAliasPath = (comPath: string): string => {
     if (comPath?.startsWith('/pages')) {
         return comPath.replace('/pages/', '');
@@ -19,4 +22,12 @@ export const addWebpackAliasPath = (comPath: string): string => {
     } else {
         return comPath;
     }
+}
+
+/**
+ * 移动端路由支持 双路由 双模块
+ * @param route
+ */
+export const autoComponents = (route: RrefetchRoute) => {
+    return isMobile() ? (route.mComponent || route.component) : route.component
 }
