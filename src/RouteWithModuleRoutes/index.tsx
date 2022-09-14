@@ -9,61 +9,62 @@
  * @date: 2021/7/30 8:14
  *
  **********************************************************************/
-import React, { useState, useEffect, Fragment, ReactNode } from 'react';
+import React, { useState, useEffect } from 'react';
 import { RouteProps, useLocation } from "react-router-dom";
-import { memoized, MemoizedFn } from "@gaopeng123/utils.function";
-import Prefetch from '../Prefetch';
 import RouteWithChildrenSubRoutes from "../RouteWithChildrenSubRoutes";
-import { RrefetchRoute } from "../typing";
+import KeepAlive, { AliveScope, useAliveController } from 'react-activation';
+import { RouteWithModuleRoutesProps, RrefetchRoute, SingleRouterProps } from "../typing";
+import { cacheRouter } from "../addWebpackAliasPath";
 
 /**
- * 递归匹配路由
- * @param routers
- * @param pathname
+ * 单个路由
+ * @constructor
  */
-const pathnameFromRouters: MemoizedFn = (pathname: string, routers: Array<any>, isVite?: boolean) => {
-    if (routers) {
-        for (let route of routers) {
-            // @ts-ignore
-            const {path} = route;
-            // @ts-ignore
-            const children = route?.children || route?.routes;
-            if (path === pathname) {
-                /**
-                 * 预加载策略 将同级路由和当前子级路由全部加载
-                 */
-                !isVite && Prefetch(routers.filter((r) => route !== r).concat(children || []));
-                return route;
-            } else {
-                const state: any = pathnameFromRouters(pathname, children, isVite);
-                if (state) return state;
+const SingleRouter = ({router, loading, loadError, isVite}: SingleRouterProps) => {
+    return (
+        <>
+            {
+                router ? <RouteWithChildrenSubRoutes {...router} loading={loading} isVite={isVite}/> :
+                    <span>{loadError}</span>
             }
-        }
-    }
-};
-
+        </>
+    )
+}
 /**
  * 缓存路由
+ * @constructor
  */
-const cacheRouter = memoized(pathnameFromRouters);
-/**
- * 暴露入口
- */
-export declare type RouteWithModuleRoutesProps = {
-    routers: any[];
-    onRouteChange?: (route: RouteProps & RrefetchRoute) => void;
-    isVite?: boolean; // 是否使用vite模式
-    loading?: boolean | ReactNode; // 是否使用loading效果  false不使用 true使用默认的 也可传递组件
+const KeepAliveRouter = ({router, loading, loadError, isVite, keepAlive}: SingleRouterProps) => {
+    return (
+        <AliveScope>
+            <KeepAlive when={keepAlive === 'auto' ? !router?.hideInMenu : true} id={`${router?.path}`}
+                       cacheKey={`${router?.path}`}>
+                <SingleRouter router={router} loading={loading} loadError={loadError} isVite={isVite}/>
+            </KeepAlive>
+        </AliveScope>
+    )
 }
 
 const RouteWithModuleRoutes: React.FC<RouteWithModuleRoutesProps> = (props) => {
+    /**
+     * 加载错误状态
+     */
     const [loadError, setLoadError] = useState<string>('');
+    /**
+     * 当前加载路由
+     */
     const [router, setRouter] = useState<RouteProps & RrefetchRoute>();
-    const {routers, onRouteChange} = props;
+    const {routers, onRouteChange, loading, isVite, keepAlive, uninstallKeepAliveKeys} = props;
     const location = useLocation();
+    /**
+     * 获取参数
+     */
     const pathname = location.pathname;
-    const isVite = props.isVite;
-    const loading = props.loading;
+    /**
+     * 缓存模式
+     */
+    const _keepAlive = keepAlive || 'not';
+
     useEffect(() => {
         if (pathname && pathname !== '/') {
             const route = cacheRouter(pathname, routers, isVite)[0];
@@ -75,14 +76,32 @@ const RouteWithModuleRoutes: React.FC<RouteWithModuleRoutesProps> = (props) => {
             }
         }
     }, [pathname, routers]);
+    /**
+     * 缓存清理
+     */
+    const {drop} = useAliveController();
+    /**
+     * 监听卸载菜单 如果需要卸载 则清理缓存
+     */
+    useEffect(() => {
+        if (uninstallKeepAliveKeys?.length) {
+            for (const uninstallKeepAliveKey of uninstallKeepAliveKeys) {
+                drop(uninstallKeepAliveKey);
+            }
+        }
+    }, [uninstallKeepAliveKeys]);
 
     return (
-        <Fragment>
+        <>
             {
-                router ? <RouteWithChildrenSubRoutes {...router} loading={loading} isVite={isVite}/> :
-                    <span>{loadError}</span>
+                _keepAlive !== 'not'
+                    ? <KeepAliveRouter
+                        keepAlive={_keepAlive}
+                        router={router} loading={loading} loadError={loadError} isVite={isVite}/>
+                    : <SingleRouter router={router} loading={loading} loadError={loadError} isVite={isVite}/>
             }
-        </Fragment>
+        </>
     )
 };
+
 export default RouteWithModuleRoutes;
