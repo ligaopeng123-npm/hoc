@@ -13,6 +13,14 @@
 `  动态匹配路由 模块统一放在pages目录下，并且需要配置alias为@pages`
 
 ```typescript
+export type RrefetchRoute = {
+    prefetchComponent?: any; // 预加载资源
+    isVite?: boolean; // 是否使用vite加载
+    loading?: boolean | ReactNode; // 是否使用加载状态
+    component?: any; // pc端加载组件
+    mComponent?: any; // 移动端加载组件
+}
+
 export declare type RouteWithModuleRoutesProps = {
     routers: any[];
     onRouteChange?: (route: RouteProps & RrefetchRoute) => void;
