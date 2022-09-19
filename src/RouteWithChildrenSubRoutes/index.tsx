@@ -10,8 +10,8 @@
  *
  **********************************************************************/
 import React from 'react';
-import { RouteProps } from "react-router-dom";
-import { RrefetchRoute } from "../typing";
+import { RouteProps, useLocation, useParams } from "react-router-dom";
+import { keepAliveType, RrefetchRoute } from "../typing";
 import { addWebpackAliasPath, autoComponents } from "../addWebpackAliasPath";
 import { PrefetchLazyComponent } from "../Prefetch";
 
@@ -32,12 +32,59 @@ export const getAsyncPages = (imports: Record<string, () => Promise<any>>, reg: 
         .reduce((o, n) => ({...o, ...n}), []) as unknown) as Record<string, () => Promise<any>>;
 }
 
-export const RouteWithChildrenSubRoutes = (route: RouteProps & RrefetchRoute) => {
+export const RouteWithChildrenSubRoutes = (route: RouteProps & RrefetchRoute & { keepAlive?: keepAliveType }) => {
+    /**
+     * 实际路由
+     */
     const _path = route?.path as string;
-    if (!PrefetchLazyComponent.get(_path)) {
-        PrefetchLazyComponent.add(_path, React.lazy(() => route.prefetchComponent || import(`@pages/${addWebpackAliasPath(autoComponents(route))}`)));
+    /**
+     * 查看缓存的状态
+     */
+    const keepAlive = route.keepAlive;
+    /**
+     * 当前路由state
+     */
+    const locationVal = useLocation();
+    /**
+     * 当前路由的params
+     */
+    const params = useParams();
+    /**
+     * 获取缓存组件
+     */
+    const getLazyComponent = () => {
+        return React.lazy(() => route.prefetchComponent || import(`@pages/${addWebpackAliasPath(autoComponents(route))}`));
     }
-    const LazyComponent = PrefetchLazyComponent.get(_path);
+
+    const checkKeepAlive = (): boolean => {
+        switch (keepAlive) {
+            case "not":
+                return false;
+            case "auto":
+                return route.hideInMenu !== true;
+            case "force":
+                return true;
+            default: {
+                return false;
+            }
+        }
+    }
+
+    let LazyComponent;
+    /**
+     * 需要缓存
+     */
+    if (checkKeepAlive()) {
+        if (!PrefetchLazyComponent.get(_path)) {
+            PrefetchLazyComponent.add(_path, getLazyComponent(), {params: params, location: locationVal});
+        }
+        LazyComponent = PrefetchLazyComponent.get(_path);
+    }
+    // 不需要缓存
+    else {
+        LazyComponent = getLazyComponent()
+    }
+
     return (
         <React.Suspense
             fallback={

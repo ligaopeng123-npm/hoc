@@ -27,3 +27,11 @@ export { default as HistoryRouter } from "./HistoryRouter";
  */
 export { default as changeRouteTitle } from "./ChangeRouteTitle";
 export type { RrefetchRoute } from "./typing";
+/**
+ * 包裹hooks
+ */
+export { default as useLocation } from "./hooks/useLocation";
+/**
+ * 包裹hooks
+ */
+export { default as useParams } from "./hooks/useParams";

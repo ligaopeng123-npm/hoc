@@ -13,7 +13,7 @@ import React, { useState, useEffect } from 'react';
 import { RouteProps, useLocation } from "react-router-dom";
 import RouteWithChildrenSubRoutes from "../RouteWithChildrenSubRoutes";
 import KeepAlive, { useAliveController, AliveScope } from 'react-activation';
-import { RouteWithModuleRoutesProps, RrefetchRoute, SingleRouterProps } from "../typing";
+import { keepAliveType, RouteWithModuleRoutesProps, RrefetchRoute, SingleRouterProps } from "../typing";
 import { cacheRouter } from "../addWebpackAliasPath";
 import { PrefetchLazyComponent } from "../Prefetch";
 
@@ -25,7 +25,11 @@ const KeepAliveRouter = ({router, loading, isVite, keepAlive}: SingleRouterProps
     return (
         <AliveScope>
             <KeepAlive when={keepAlive === 'auto' ? !router?.hideInMenu : true} id={`${router?.path}`}>
-                <RouteWithChildrenSubRoutes {...router} loading={loading} isVite={isVite}/>
+                <RouteWithChildrenSubRoutes
+                    keepAlive={keepAlive as keepAliveType}
+                    {...router}
+                    loading={loading}
+                    isVite={isVite}/>
             </KeepAlive>
         </AliveScope>
     )
@@ -49,7 +53,7 @@ const RouteWithModuleRoutes: React.FC<RouteWithModuleRoutesProps> = (props) => {
     /**
      * 缓存模式
      */
-    const _keepAlive = keepAlive || 'not';
+    const _keepAlive: keepAliveType = keepAlive || 'not';
 
     useEffect(() => {
         if (pathname && pathname !== '/') {
@@ -86,9 +90,12 @@ const RouteWithModuleRoutes: React.FC<RouteWithModuleRoutesProps> = (props) => {
                     ? <div>{loadError}</div>
                     : _keepAlive !== 'not'
                         ? <KeepAliveRouter
-                            keepAlive={_keepAlive}
+                            keepAlive={_keepAlive as keepAliveType}
                             router={router} loading={loading} loadError={loadError} isVite={isVite}/>
-                        : <RouteWithChildrenSubRoutes {...router} loading={loading} isVite={isVite}/>
+                        : <RouteWithChildrenSubRoutes
+                            keepAlive={keepAlive as keepAliveType}
+                            {...router} loading={loading}
+                            isVite={isVite}/>
             }
         </>
     )

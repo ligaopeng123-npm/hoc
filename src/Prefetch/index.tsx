@@ -42,12 +42,19 @@ const Prefetch = () => {
  */
 const PrefetchLazyComponentFn = () => {
     let Router_Lazy_Component: any = {};
+    let currentRouter: string = '';
+    const routerKey = (key: string) => {
+        return `${key}-cache`;
+    }
     return {
-        add: (key: string, component: any) => {
+        add: (key: string, component: any, routeParams: any) => {
             Router_Lazy_Component[key] = component;
+            Router_Lazy_Component[routerKey(key)] = routeParams;
+            currentRouter = key;
         },
         del: (key: string) => {
             delete Router_Lazy_Component[key];
+            delete Router_Lazy_Component[routerKey(key)];
         },
         clear: () => {
             Router_Lazy_Component = {};
@@ -55,6 +62,15 @@ const PrefetchLazyComponentFn = () => {
         get: (key: string) => {
             return Router_Lazy_Component[key];
         },
+        getCurrentRouter: () => {
+            return currentRouter;
+        },
+        getState: () => {
+            return Router_Lazy_Component[routerKey(currentRouter)]?.location || {}
+        },
+        getParams: ()=> {
+            return Router_Lazy_Component[routerKey(currentRouter)]?.params || {}
+        }
     }
 }
 
