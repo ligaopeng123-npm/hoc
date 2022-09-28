@@ -91,10 +91,14 @@ const RouteWithModuleRoutes: React.FC<RouteWithModuleRoutesProps> = (props) => {
                     : _keepAlive !== 'not'
                         ? <KeepAliveRouter
                             keepAlive={_keepAlive as keepAliveType}
-                            router={router} loading={loading} loadError={loadError} isVite={isVite}/>
+                            router={router}
+                            loading={loading}
+                            loadError={loadError}
+                            isVite={isVite}/>
                         : <RouteWithChildrenSubRoutes
                             keepAlive={keepAlive as keepAliveType}
-                            {...router} loading={loading}
+                            {...router}
+                            loading={loading}
                             isVite={isVite}/>
             }
         </>
