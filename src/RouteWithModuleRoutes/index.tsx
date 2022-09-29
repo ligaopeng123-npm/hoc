@@ -16,6 +16,7 @@ import KeepAlive, { useAliveController, AliveScope } from 'react-activation';
 import { keepAliveType, RouteWithModuleRoutesProps, RrefetchRoute, SingleRouterProps } from "../typing";
 import { cacheRouter } from "../addWebpackAliasPath";
 import { PrefetchLazyComponent } from "../Prefetch";
+import TopBarLoading from '../TopBarLoading';
 
 /**
  * 缓存路由
@@ -88,18 +89,25 @@ const RouteWithModuleRoutes: React.FC<RouteWithModuleRoutesProps> = (props) => {
             {
                 !router
                     ? <div>{loadError}</div>
-                    : _keepAlive !== 'not'
-                        ? <KeepAliveRouter
-                            keepAlive={_keepAlive as keepAliveType}
-                            router={router}
-                            loading={loading}
-                            loadError={loadError}
-                            isVite={isVite}/>
-                        : <RouteWithChildrenSubRoutes
-                            keepAlive={keepAlive as keepAliveType}
-                            {...router}
-                            loading={loading}
-                            isVite={isVite}/>
+                    : <>
+                        <TopBarLoading color={router.loadingColor} pathname={pathname}/>
+                        <div attr-hoc={'hoc-main'}>
+                            {
+                                _keepAlive !== 'not'
+                                    ? <KeepAliveRouter
+                                        keepAlive={_keepAlive as keepAliveType}
+                                        router={router}
+                                        loading={loading}
+                                        loadError={loadError}
+                                        isVite={isVite}/>
+                                    : <RouteWithChildrenSubRoutes
+                                        keepAlive={keepAlive as keepAliveType}
+                                        {...router}
+                                        loading={loading}
+                                        isVite={isVite}/>
+                            }
+                        </div>
+                    </>
             }
         </>
     )

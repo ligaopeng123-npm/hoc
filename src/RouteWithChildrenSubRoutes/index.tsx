@@ -14,7 +14,7 @@ import { RouteProps, useLocation, useParams } from "react-router-dom";
 import { keepAliveType, RrefetchRoute } from "../typing";
 import { addWebpackAliasPath, autoComponents } from "../addWebpackAliasPath";
 import { PrefetchLazyComponent } from "../Prefetch";
-import LoadingBar from "react-top-loading-bar";
+import TopBarLoading from "../TopBarLoading";
 
 /**
  * 异步加载资源 处理vite动态加载
@@ -32,6 +32,7 @@ export const getAsyncPages = (imports: Record<string, () => Promise<any>>, reg: 
         .filter((m) => !!m)
         .reduce((o, n) => ({...o, ...n}), []) as unknown) as Record<string, () => Promise<any>>;
 }
+
 
 export const RouteWithChildrenSubRoutes = (route: RouteProps & RrefetchRoute & { keepAlive?: keepAliveType }) => {
     /**
@@ -94,7 +95,7 @@ export const RouteWithChildrenSubRoutes = (route: RouteProps & RrefetchRoute & {
                     : <div>
                         {
                             route.loading === true
-                                ? <LoadingBar color={route.loadingColor || '#f11946'}/>
+                                ? <TopBarLoading color={route.loadingColor}/>
                                 : route.loading
                         }
                     </div>

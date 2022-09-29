@@ -68,12 +68,42 @@ const PrefetchLazyComponentFn = () => {
         getState: () => {
             return Router_Lazy_Component[routerKey(currentRouter)]?.location || {}
         },
-        getParams: ()=> {
+        getParams: () => {
             return Router_Lazy_Component[routerKey(currentRouter)]?.params || {}
         }
     }
 }
 
 export const PrefetchLazyComponent = PrefetchLazyComponentFn();
+
+/**
+ * 缓存组件管理
+ * @constructor
+ */
+const LoadBarFn = () => {
+    let LoadBar_Component: any = {};
+    const LoadBar = {
+        add: (key: string) => {
+            LoadBar_Component[key] = Date.now();
+        },
+        check: (key: string) => {
+            const _lastNow = LoadBar.get(key) || 0;
+            const _now = Date.now();
+            // 时间太短 不需要触发loading
+            if (_now - _lastNow < 100) {
+                LoadBar.add(key);
+                return false;
+            }
+            LoadBar.add(key);
+            return true;
+        },
+        get: (key: string) => {
+            return LoadBar_Component[key];
+        },
+    }
+    return LoadBar
+}
+
+export const LoadBar = LoadBarFn();
 
 export default Prefetch();
