@@ -22,7 +22,7 @@ import TopBarLoading from '../TopBarLoading';
  * 缓存路由
  * @constructor
  */
-const KeepAliveRouter = ({router, loading, isVite, keepAlive}: SingleRouterProps) => {
+const KeepAliveRouter = ({ router, loading, isVite, keepAlive,loadingColor }: SingleRouterProps) => {
     return (
         <AliveScope>
             <KeepAlive when={keepAlive === 'auto' ? !router?.hideInMenu : true} id={`${router?.path}`}>
@@ -30,14 +30,16 @@ const KeepAliveRouter = ({router, loading, isVite, keepAlive}: SingleRouterProps
                     keepAlive={keepAlive as keepAliveType}
                     {...router}
                     loading={loading}
-                    isVite={isVite}/>
+                    isVite={isVite}
+                    loadingColor={loadingColor}
+                />
             </KeepAlive>
         </AliveScope>
     )
 }
 
 const RouteWithModuleRoutes: React.FC<RouteWithModuleRoutesProps> = (props) => {
-    const {routers, onRouteChange, loading, isVite, keepAlive, uninstallKeepAliveKeys} = props;
+    const { routers, onRouteChange, loading, loadingColor, isVite, keepAlive, uninstallKeepAliveKeys } = props;
     /**
      * 当前加载路由
      */
@@ -71,7 +73,7 @@ const RouteWithModuleRoutes: React.FC<RouteWithModuleRoutesProps> = (props) => {
     /**
      * 缓存清理
      */
-    const {drop} = useAliveController();
+    const { drop } = useAliveController();
     /**
      * 监听卸载菜单 如果需要卸载 则清理缓存
      */
@@ -90,7 +92,7 @@ const RouteWithModuleRoutes: React.FC<RouteWithModuleRoutesProps> = (props) => {
                 !router
                     ? <div>{loadError}</div>
                     : <>
-                        <TopBarLoading color={router.loadingColor} pathname={pathname}/>
+                        <TopBarLoading color={loadingColor} pathname={pathname}/>
                         <div attr-hoc={'hoc-main'}>
                             {
                                 _keepAlive !== 'not'
@@ -98,13 +100,17 @@ const RouteWithModuleRoutes: React.FC<RouteWithModuleRoutesProps> = (props) => {
                                         keepAlive={_keepAlive as keepAliveType}
                                         router={router}
                                         loading={loading}
+                                        loadingColor={loadingColor}
                                         loadError={loadError}
-                                        isVite={isVite}/>
+                                        isVite={isVite}
+                                    />
                                     : <RouteWithChildrenSubRoutes
                                         keepAlive={_keepAlive as keepAliveType}
                                         {...router}
                                         loading={loading}
-                                        isVite={isVite}/>
+                                        loadingColor={loadingColor}
+                                        isVite={isVite}
+                                    />
                             }
                         </div>
                     </>

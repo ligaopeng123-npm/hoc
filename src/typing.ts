@@ -40,8 +40,7 @@ export declare type RouteWithModuleRoutesProps = {
 
 export type SingleRouterProps = {
     router: RouteProps & RrefetchRoute;
-    loading?: boolean | ReactNode;
     loadError?: string;
     isVite?: boolean;
     keepAlive?: keepAliveType;
-}
+} & LoadingProps;
