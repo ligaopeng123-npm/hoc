@@ -26,11 +26,11 @@ export const getAsyncPages = (imports: Record<string, () => Promise<any>>, reg: 
         .map((key) => {
             const names = reg.exec(key);
             return Array.isArray(names) && names.length >= 2
-                ? {[names[1]]: imports[key]}
+                ? { [names[1]]: imports[key] }
                 : undefined;
         })
         .filter((m) => !!m)
-        .reduce((o, n) => ({...o, ...n}), []) as unknown) as Record<string, () => Promise<any>>;
+        .reduce((o, n) => ({ ...o, ...n }), []) as unknown) as Record<string, () => Promise<any>>;
 }
 
 
@@ -77,8 +77,9 @@ export const RouteWithChildrenSubRoutes = (route: RouteProps & RrefetchRoute & {
      * 需要缓存
      */
     if (checkKeepAlive()) {
+        PrefetchLazyComponent.addState(_path, { params: params, location: locationVal })
         if (!PrefetchLazyComponent.get(_path)) {
-            PrefetchLazyComponent.add(_path, getLazyComponent(), {params: params, location: locationVal});
+            PrefetchLazyComponent.add(_path, getLazyComponent());
         }
         LazyComponent = PrefetchLazyComponent.get(_path);
     }

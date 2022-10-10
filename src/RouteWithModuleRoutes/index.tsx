@@ -101,7 +101,7 @@ const RouteWithModuleRoutes: React.FC<RouteWithModuleRoutesProps> = (props) => {
                                         loadError={loadError}
                                         isVite={isVite}/>
                                     : <RouteWithChildrenSubRoutes
-                                        keepAlive={keepAlive as keepAliveType}
+                                        keepAlive={_keepAlive as keepAliveType}
                                         {...router}
                                         loading={loading}
                                         isVite={isVite}/>

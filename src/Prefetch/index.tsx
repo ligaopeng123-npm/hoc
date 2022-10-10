@@ -47,8 +47,10 @@ const PrefetchLazyComponentFn = () => {
         return `${key}-cache`;
     }
     return {
-        add: (key: string, component: any, routeParams: any) => {
+        add: (key: string, component: any) => {
             Router_Lazy_Component[key] = component;
+        },
+        addState: (key: string, routeParams: any) => {
             Router_Lazy_Component[routerKey(key)] = routeParams;
             currentRouter = key;
         },
@@ -66,6 +68,7 @@ const PrefetchLazyComponentFn = () => {
             return currentRouter;
         },
         getState: () => {
+            console.log(currentRouter, currentRouter);
             return Router_Lazy_Component[routerKey(currentRouter)]?.location || {}
         },
         getParams: () => {
