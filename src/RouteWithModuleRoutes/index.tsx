@@ -22,18 +22,29 @@ import TopBarLoading from '../TopBarLoading';
  * 缓存路由
  * @constructor
  */
-const KeepAliveRouter = ({ router, loading, isVite, keepAlive,loadingColor }: SingleRouterProps) => {
+const KeepAliveRouter = ({ router, loading, isVite, keepAlive, loadingColor }: SingleRouterProps) => {
     return (
         <AliveScope>
-            <KeepAlive when={keepAlive === 'auto' ? !router?.hideInMenu : true} id={`${router?.path}`}>
-                <RouteWithChildrenSubRoutes
-                    keepAlive={keepAlive as keepAliveType}
-                    {...router}
-                    loading={loading}
-                    isVite={isVite}
-                    loadingColor={loadingColor}
-                />
-            </KeepAlive>
+            {
+                // when={keepAlive === 'auto' ? !router?.hideInMenu : true} 去掉when 走自动缓存配置
+                keepAlive === 'force' || (keepAlive === 'auto' && !router?.hideInMenu)
+                    ? <KeepAlive cacheKey={router?.path} id={router?.path}>
+                        <RouteWithChildrenSubRoutes
+                            keepAlive={keepAlive as keepAliveType}
+                            {...router}
+                            loading={loading}
+                            isVite={isVite}
+                            loadingColor={loadingColor}
+                        />
+                    </KeepAlive>
+                    : <RouteWithChildrenSubRoutes
+                        keepAlive={keepAlive as keepAliveType}
+                        {...router}
+                        loading={loading}
+                        isVite={isVite}
+                        loadingColor={loadingColor}
+                    />
+            }
         </AliveScope>
     )
 }
