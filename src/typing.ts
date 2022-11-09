@@ -28,6 +28,7 @@ export type keepAliveType = 'auto' | 'force' | 'not';
 export declare type RouteWithModuleRoutesProps = {
     routers: any[];
     onRouteChange?: (route: RouteProps & RrefetchRoute) => void;
+    onLoadRouteError?: (route: RouteProps & RrefetchRoute) => void;
     /**
      * auto 默认缓存非hideInMenu菜单级别的路由
      * force 强制缓存所有页面
@@ -38,6 +39,13 @@ export declare type RouteWithModuleRoutesProps = {
     uninstallKeepAliveKeys?: Array<string>;
 } & LoadingProps & LoaderProps;
 
+declare global {
+    namespace JSX {
+        interface IntrinsicElements {
+            'error-404': any
+        }
+    }
+}
 export type SingleRouterProps = {
     router: RouteProps & RrefetchRoute;
     loadError?: string;

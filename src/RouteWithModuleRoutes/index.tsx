@@ -17,6 +17,7 @@ import { keepAliveType, RouteWithModuleRoutesProps, RrefetchRoute, SingleRouterP
 import { cacheRouter } from "../addWebpackAliasPath";
 import { PrefetchLazyComponent } from "../Prefetch";
 import TopBarLoading from '../TopBarLoading';
+import "../Error/ErrorComponents";
 
 /**
  * 缓存路由
@@ -101,7 +102,7 @@ const RouteWithModuleRoutes: React.FC<RouteWithModuleRoutesProps> = (props) => {
         <>
             {
                 !router
-                    ? <div>{loadError}</div>
+                    ? <error-404></error-404>
                     : <>
                         <TopBarLoading color={loadingColor} pathname={pathname}/>
                         <div attr-hoc={'hoc-main'}>
