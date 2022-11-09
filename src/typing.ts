@@ -6,3 +6,11 @@ export type RrefetchRoute = {
     loading?: boolean | ReactNode; // 是否使用vite加载
     component?: any; // 是否使用vite加载
 }
+
+declare global {
+    namespace JSX {
+        interface IntrinsicElements {
+            'error-404': any
+        }
+    }
+}

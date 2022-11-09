@@ -9,12 +9,13 @@
  * @date: 2021/7/30 8:14
  *
  **********************************************************************/
-import React, {useState, useEffect, Fragment, ReactNode} from 'react';
-import {RouteProps, useLocation} from "react-router-dom";
-import {memoized, MemoizedFn} from "@gaopeng123/utils.function";
+import React, { useState, useEffect, Fragment, ReactNode } from 'react';
+import { RouteProps, useLocation } from "react-router-dom";
+import { memoized, MemoizedFn } from "@gaopeng123/utils.function";
 import Prefetch from '../Prefetch';
 import RouteWithChildrenSubRoutes from "../RouteWithChildrenSubRoutes";
-import {RrefetchRoute} from "../typing";
+import { RrefetchRoute } from "../typing";
+import "../Error/ErrorComponents";
 
 /**
  * 递归匹配路由
@@ -25,7 +26,7 @@ const pathnameFromRouters: MemoizedFn = (pathname: string, routers: Array<any>, 
     if (routers) {
         for (let route of routers) {
             // @ts-ignore
-            const {path} = route;
+            const { path } = route;
             // @ts-ignore
             const children = route?.children || route?.routes;
             if (path === pathname) {
@@ -58,7 +59,8 @@ export declare type RouteWithModuleRoutesProps = {
 
 const RouteWithModuleRoutes: React.FC<RouteWithModuleRoutesProps> = (props) => {
     const [router, setRouter] = useState<RouteProps & RrefetchRoute>();
-    const {routers, onRouteChange} = props;
+    const [canLoaded, setCanLoaded] = useState(true);
+    const { routers, onRouteChange } = props;
     const location = useLocation();
     const pathname = location.pathname;
     const isVite = props.isVite;
@@ -66,16 +68,28 @@ const RouteWithModuleRoutes: React.FC<RouteWithModuleRoutesProps> = (props) => {
     useEffect(() => {
         if (pathname && pathname !== '/') {
             const route = cacheRouter(pathname, routers, isVite)[0];
-            route && setRouter(route);
-            route && onRouteChange && onRouteChange(route);
+            if (route) {
+                setRouter(route);
+                onRouteChange && onRouteChange(route);
+                setCanLoaded(true);
+            } else {
+                setCanLoaded(false);
+            }
         }
     }, [pathname, routers]);
 
     return (
         <Fragment>
             {
-                router ? <RouteWithChildrenSubRoutes {...router} loading={loading} isVite={isVite}/> :
-                    <span>页面加载错误</span>
+                router
+                    ? <RouteWithChildrenSubRoutes {...router} loading={loading} isVite={isVite}/>
+                    : <>
+                        {
+                            canLoaded
+                                ? loading || <span>加载中...</span>
+                                : <error-404></error-404>
+                        }
+                    </>
             }
         </Fragment>
     )
