@@ -15,7 +15,7 @@
     "scripts": {
         "start": "tsdx watch",
         "build": "tsdx build",
-        "push": "npm publish --access public",
+        "push": "pnpm publish --access public",
         "test": "tsdx test --passWithNoTests",
         "lint": "tsdx lint",
         "prepare": "tsdx build",
