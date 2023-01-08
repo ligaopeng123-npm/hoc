@@ -18,12 +18,13 @@ import { cacheRouter } from "../addWebpackAliasPath";
 import { PrefetchLazyComponent } from "../Prefetch";
 import TopBarLoading from '../TopBarLoading';
 import "../Error/ErrorComponents";
+import "../Error/LoadingComponents";
 
 /**
  * 缓存路由
  * @constructor
  */
-const KeepAliveRouter = ({ router, loading, isVite, keepAlive, loadingColor }: SingleRouterProps) => {
+const KeepAliveRouter = ({router, loading, isVite, keepAlive, loadingColor}: SingleRouterProps) => {
     return (
         <AliveScope>
             {
@@ -51,7 +52,7 @@ const KeepAliveRouter = ({ router, loading, isVite, keepAlive, loadingColor }: S
 }
 
 const RouteWithModuleRoutes: React.FC<RouteWithModuleRoutesProps> = (props) => {
-    const { routers, onRouteChange, loading, loadingColor, isVite, keepAlive, uninstallKeepAliveKeys } = props;
+    const {routers, onRouteChange, loading, loadingColor, isVite, keepAlive, uninstallKeepAliveKeys} = props;
     /**
      * 当前加载路由
      */
@@ -85,7 +86,7 @@ const RouteWithModuleRoutes: React.FC<RouteWithModuleRoutesProps> = (props) => {
     /**
      * 缓存清理
      */
-    const { drop } = useAliveController();
+    const {drop} = useAliveController();
     /**
      * 监听卸载菜单 如果需要卸载 则清理缓存
      */
@@ -101,34 +102,39 @@ const RouteWithModuleRoutes: React.FC<RouteWithModuleRoutesProps> = (props) => {
     return (
         <>
             {
-                !router
-                    ? <error-404></error-404>
-                    : <>
-                        <TopBarLoading color={loadingColor} pathname={pathname}/>
-                        <div attr-hoc={'hoc-main'}>
-                            {
-                                _keepAlive !== 'not'
-                                    ? <KeepAliveRouter
-                                        keepAlive={_keepAlive as keepAliveType}
-                                        router={router}
-                                        loading={loading}
-                                        loadingColor={loadingColor}
-                                        loadError={loadError}
-                                        isVite={isVite}
-                                    />
-                                    : <RouteWithChildrenSubRoutes
-                                        keepAlive={_keepAlive as keepAliveType}
-                                        {...router}
-                                        loading={loading}
-                                        loadingColor={loadingColor}
-                                        isVite={isVite}
-                                    />
-                            }
-                        </div>
+                routers?.length
+                    ? <>
+                        !router
+                        ? <error-404></error-404>
+                        : <>
+                            <TopBarLoading color={loadingColor} pathname={pathname}/>
+                            <div attr-hoc={'hoc-main'}>
+                                {
+                                    _keepAlive !== 'not'
+                                        ? <KeepAliveRouter
+                                            keepAlive={_keepAlive as keepAliveType}
+                                            router={router}
+                                            loading={loading}
+                                            loadingColor={loadingColor}
+                                            loadError={loadError}
+                                            isVite={isVite}
+                                        />
+                                        : <RouteWithChildrenSubRoutes
+                                            keepAlive={_keepAlive as keepAliveType}
+                                            {...router}
+                                            loading={loading}
+                                            loadingColor={loadingColor}
+                                            isVite={isVite}
+                                        />
+                                }
+                            </div>
+                        </>
                     </>
+                    : <loading-component></loading-component>
             }
         </>
     )
-};
+}
+;
 
 export default RouteWithModuleRoutes;

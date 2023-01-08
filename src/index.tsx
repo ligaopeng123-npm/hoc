@@ -1,7 +1,6 @@
 /**
  * 动态加载js文件
  */
-
 export type { DynamicLoadScriptProps } from "./DynamicLoadScript";
 export { default as DynamicLoadScript } from "./DynamicLoadScript";
 /**
@@ -36,3 +35,8 @@ export { default as useLocation } from "./hooks/useLocation";
  * 包裹hooks
  */
 export { default as useParams } from "./hooks/useParams";
+/**
+ * 基础组件
+ */
+export { default as ErrorComponents } from "./Error/ErrorComponents";
+export { default as LoadingComponents } from "./Error/LoadingComponents";

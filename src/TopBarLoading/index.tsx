@@ -49,7 +49,7 @@ const TopBarLoading = forwardRef<TopLoadingBarRef, IProps & { pathname?: string 
             if (!flag) {
                 timer = setTimeout(() => {
                     if (loopTimer < 10) {
-                        checkLoop(++loopTimer);
+                        checkLoop(loopTimer + 1);
                     } else {
                         clearTimeout(timer);
                     }

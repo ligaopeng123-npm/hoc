@@ -46,8 +46,16 @@ declare global {
         }
     }
 }
+
+declare global {
+    namespace JSX {
+        interface IntrinsicElements {
+            'loading-component': any
+        }
+    }
+}
 export type SingleRouterProps = {
-    router: RouteProps & RrefetchRoute;
+    router?: RouteProps & RrefetchRoute;
     loadError?: string;
     isVite?: boolean;
     keepAlive?: keepAliveType;
