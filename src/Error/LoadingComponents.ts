@@ -27,6 +27,9 @@ class LoadingComponents extends HTMLElement {
         const animation_duration = '1.8s'
         return `
             <style>
+                .content {
+                    min-height: 100px;
+                }
                 .loader {
                   position: absolute;
                   top: 50%;
@@ -72,7 +75,7 @@ class LoadingComponents extends HTMLElement {
                   }
                 }
             </style>
-            <div class="loader"></div>
+            <div class="content"><div class="loader"></div></div>
         `
     }
 }

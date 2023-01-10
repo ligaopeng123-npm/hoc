@@ -99,42 +99,45 @@ const RouteWithModuleRoutes: React.FC<RouteWithModuleRoutesProps> = (props) => {
         }
     }, [uninstallKeepAliveKeys]);
 
+    console.log('routers', routers?.length)
+
     return (
         <>
             {
-                routers?.length
+                !router
                     ? <>
-                        !router
-                        ? <error-404></error-404>
-                        : <>
-                            <TopBarLoading color={loadingColor} pathname={pathname}/>
-                            <div attr-hoc={'hoc-main'}>
-                                {
-                                    _keepAlive !== 'not'
-                                        ? <KeepAliveRouter
-                                            keepAlive={_keepAlive as keepAliveType}
-                                            router={router}
-                                            loading={loading}
-                                            loadingColor={loadingColor}
-                                            loadError={loadError}
-                                            isVite={isVite}
-                                        />
-                                        : <RouteWithChildrenSubRoutes
-                                            keepAlive={_keepAlive as keepAliveType}
-                                            {...router}
-                                            loading={loading}
-                                            loadingColor={loadingColor}
-                                            isVite={isVite}
-                                        />
-                                }
-                            </div>
-                        </>
+                        {
+                            routers?.length
+                                ? <error-404></error-404>
+                                : <loading-component></loading-component>
+                        }
                     </>
-                    : <loading-component></loading-component>
+                    : <>
+                        <TopBarLoading color={loadingColor} pathname={pathname}/>
+                        <div attr-hoc={'hoc-main'}>
+                            {
+                                _keepAlive !== 'not'
+                                    ? <KeepAliveRouter
+                                        keepAlive={_keepAlive as keepAliveType}
+                                        router={router}
+                                        loading={loading}
+                                        loadingColor={loadingColor}
+                                        loadError={loadError}
+                                        isVite={isVite}
+                                    />
+                                    : <RouteWithChildrenSubRoutes
+                                        keepAlive={_keepAlive as keepAliveType}
+                                        {...router}
+                                        loading={loading}
+                                        loadingColor={loadingColor}
+                                        isVite={isVite}
+                                    />
+                            }
+                        </div>
+                    </>
             }
         </>
     )
-}
-;
+};
 
 export default RouteWithModuleRoutes;
