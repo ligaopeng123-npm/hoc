@@ -99,8 +99,6 @@ const RouteWithModuleRoutes: React.FC<RouteWithModuleRoutesProps> = (props) => {
         }
     }, [uninstallKeepAliveKeys]);
 
-    console.log('routers', routers?.length)
-
     return (
         <>
             {
