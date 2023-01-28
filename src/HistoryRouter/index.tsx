@@ -9,7 +9,7 @@
  * @date: 2022/4/9 19:08
  *
  **********************************************************************/
-import { createElement, useLayoutEffect, useState } from 'react';
+import { createElement, PropsWithChildren, useLayoutEffect, useState } from 'react';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router-dom';
 
@@ -17,10 +17,9 @@ export const history = createBrowserHistory();
 
 interface HistoryRouterProps {
     history: typeof history;
-    children?: any;
 }
 
-const HistoryRouter = ({history, children}: HistoryRouterProps) => {
+const HistoryRouter = ({history, children}: PropsWithChildren<HistoryRouterProps>) => {
     const [state, setState] = useState({
         action: history.action,
         location: history.location
