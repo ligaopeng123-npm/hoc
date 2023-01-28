@@ -59,6 +59,11 @@ export declare type RouteWithModuleRoutesProps = {
 <RouteWithModuleRoutes isVite={false} routers={[]} onRouteChange={(router: RouteProps)=> {}} />
 ```
 
+```tsx
+useActivate(); // 模块激活
+useUnactivate(); // 模块失活
+```
+
 ## RouteWithSubRoutes  
 
 `拼接switch中的路由`

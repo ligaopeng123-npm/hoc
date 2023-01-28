@@ -36,6 +36,10 @@ export { default as useLocation } from "./hooks/useLocation";
  */
 export { default as useParams } from "./hooks/useParams";
 /**
+ * 钩子透出
+ */
+export { useActivate, useUnactivate, withActivation } from 'react-activation'
+/**
  * 基础组件
  */
 export { default as ErrorComponents } from "./Error/ErrorComponents";
