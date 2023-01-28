@@ -17,9 +17,10 @@ export const history = createBrowserHistory();
 
 interface HistoryRouterProps {
     history: typeof history;
+    children?: any;
 }
 
-const HistoryRouter: React.FC<HistoryRouterProps> = ({history, children}) => {
+const HistoryRouter = ({history, children}: HistoryRouterProps) => {
     const [state, setState] = useState({
         action: history.action,
         location: history.location
