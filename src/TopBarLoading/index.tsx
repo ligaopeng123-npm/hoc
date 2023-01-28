@@ -84,7 +84,6 @@ const TopBarLoading = forwardRef<TopLoadingBarRef, IProps & { pathname?: string 
             transitionTime={100}
             waitingTime={10}
             shadow={false}
-            {...props}
             color={props.color || '#28b485'}/>
     )
 })

@@ -37,6 +37,8 @@ export declare type RouteWithModuleRoutesProps = {
     keepAlive?: keepAliveType;
     // 卸载缓存的的路由  传递过来的是路由地址
     uninstallKeepAliveKeys?: Array<string>;
+    // 防止报错
+    children?: any;
 } & LoadingProps & LoaderProps;
 
 declare global {
