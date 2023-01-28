@@ -19,7 +19,7 @@ interface HistoryRouterProps {
     history: typeof history;
 }
 
-const HistoryRouter = ({history, children}: PropsWithChildren<HistoryRouterProps>) => {
+const HistoryRouter:React.FC<PropsWithChildren<HistoryRouterProps>> = ({history, children}) => {
     const [state, setState] = useState({
         action: history.action,
         location: history.location
