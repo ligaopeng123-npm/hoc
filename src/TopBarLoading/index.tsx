@@ -58,6 +58,8 @@ const TopBarLoading = forwardRef<TopLoadingBarRef, IProps & { pathname?: string 
         }
         checkLoop(0);
         return () => {
+            // 防止多次启动
+            barRef?.current?.complete();
             clearTimeout(timer);
         }
     }, [props.pathname]);
