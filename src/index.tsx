@@ -43,4 +43,5 @@ export { useActivate, useUnactivate, withActivation } from 'react-activation'
  * 基础组件
  */
 export { default as ErrorComponents } from "./Error/ErrorComponents";
+export { default as ErrorComponents403 } from "./Error/ErrorComponents403";
 export { default as LoadingComponents } from "./Error/LoadingComponents";

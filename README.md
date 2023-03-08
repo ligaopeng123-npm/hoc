@@ -119,7 +119,7 @@ const App = () => {
         console.log(111)
     }
     const [example, setExample] = useState('DynamicLoadScript');
-    const examples = ['DynamicLoadScript', 'loading-component', 'error-404'];
+    const examples = ['DynamicLoadScript', 'loading-component', 'error-404', 'error-403'];
     return (
         <div style={{display: 'flex', flexDrection: 'row'}}>
             <div style={{flex: 1,}}>
@@ -148,6 +148,8 @@ const App = () => {
                                 return <loading-component></loading-component>;
                             case 'error-404':
                                 return <error-404></error-404>;
+                             case 'error-403':
+                                return <error-403></error-403>;
                             default:
                                 return null;
                         }

@@ -52,6 +52,14 @@ declare global {
 declare global {
     namespace JSX {
         interface IntrinsicElements {
+            'error-403': any
+        }
+    }
+}
+
+declare global {
+    namespace JSX {
+        interface IntrinsicElements {
             'loading-component': any
         }
     }

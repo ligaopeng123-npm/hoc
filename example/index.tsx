@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { DynamicLoadScript, LoadingComponents, ErrorComponents } from '../src/.';
+import { DynamicLoadScript, LoadingComponents, ErrorComponents, ErrorComponents403 } from '../src/.';
 import { useState } from "react";
 
 const App = () => {
@@ -8,7 +8,7 @@ const App = () => {
         console.log(111)
     }
     const [example, setExample] = useState('DynamicLoadScript');
-    const examples = ['DynamicLoadScript', 'loading-component', 'error-404'];
+    const examples = ['DynamicLoadScript', 'loading-component', 'error-404', 'error-403'];
     return (
         <div style={{
             display: 'flex',
@@ -40,6 +40,8 @@ const App = () => {
                                 return <loading-component></loading-component>;
                             case 'error-404':
                                 return <error-404></error-404>;
+                            case 'error-403':
+                                return <error-403></error-403>;
                             default:
                                 return null;
                         }
