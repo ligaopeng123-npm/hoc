@@ -91,9 +91,12 @@ const RouteWithModuleRoutes: React.FC<RouteWithModuleRoutesProps> = (props) => {
      * 监听卸载菜单 如果需要卸载 则清理缓存
      */
     useEffect(() => {
-        if (uninstallKeepAliveKeys?.length) {
+        if (uninstallKeepAliveKeys?.length && keepAlive !== 'not') {
             for (const uninstallKeepAliveKey of uninstallKeepAliveKeys) {
-                drop(uninstallKeepAliveKey);
+                // 防止未使用缓存时 同时又设置了uninstallKeepAliveKey导致的问题
+                if (drop) {
+                    drop(uninstallKeepAliveKey);
+                }
                 PrefetchLazyComponent.del(uninstallKeepAliveKey)
             }
         }
