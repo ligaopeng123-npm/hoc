@@ -75,11 +75,10 @@ class ErrorComponents extends HTMLElement {
     getContent() {
         return `
             <h1>404</h1>
-            <h2>您访问的页面不存在</h2>
+            <h2>抱歉，您无权访问此页面或者您访问的页面不存在</h2>
             <p>
-                The page you are looking for does not exist.
-                How you got here is a mystery. But you can click the button below
-                to go back to the homepage.
+                Sorry, you do not have permission to visit this page or the page you are visiting does not exist.
+                But you can click the button below to go back to the homepage.
             </p>
         `
     }
