@@ -1,8 +1,8 @@
 /** ********************************************************************
  *
- * @模块名称: index
+ * @模块名称: TopBarLoading
  *
- * @模块用途: index
+ * @模块用途: TopBarLoading
  *
  * @date: 2022/9/28 15:31
  *
@@ -31,7 +31,7 @@ const TopBarLoading = forwardRef<TopLoadingBarRef, IProps & { pathname?: string 
     useEffect(() => {
         if (!props.pathname || !LoadBar.check(props.pathname)) {
             return () => {
-
+                barRef?.current?.complete();
             }
         }
         barRef?.current?.continuousStart(0);
@@ -52,6 +52,7 @@ const TopBarLoading = forwardRef<TopLoadingBarRef, IProps & { pathname?: string 
                         checkLoop(loopTimer + 1);
                     } else {
                         clearTimeout(timer);
+                        barRef?.current?.complete();
                     }
                 }, 200);
             }
