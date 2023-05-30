@@ -72,7 +72,7 @@ const RouteWithModuleRoutes: React.FC<RouteWithModuleRoutesProps> = (props) => {
     const _keepAlive: keepAliveType = keepAlive || 'not';
 
     useEffect(() => {
-        if (pathname && pathname !== '/') {
+        if (pathname && pathname !== '/' && routers?.length) {
             const route = cacheRouter(pathname, routers, isVite)[0];
             if (route) {
                 setLoadError('');
