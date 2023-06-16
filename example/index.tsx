@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { DynamicLoadScript, LoadingComponents, ErrorComponents, ErrorComponents403 } from '../src/.';
+import { DynamicLoadScript, LoadingComponents, ErrorComponents, ErrorComponents403 } from '../packages/hoc/src/.';
 import { useState } from "react";
 
 const App = () => {

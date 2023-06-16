@@ -7,8 +7,8 @@
         "build": "npx rimraf ../docs && parcel build index.html --dist-dir ../docs --public-url ./ --no-source-maps"
     },
     "alias": {
-        "react": "../node_modules/react",
-        "react-dom": "../node_modules/react-dom"
+        "react": "../packages/hoc/node_modules/react",
+        "react-dom": "../packages/hoc/node_modules/react-dom"
     },
     "devDependencies": {
         "@types/react": "^17.0.15",
