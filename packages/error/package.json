@@ -1,6 +1,6 @@
 {
     "name": "@gaopeng123/error-page",
-    "version": "0.5.1",
+    "version": "0.5.2",
     "description": "异常页面",
     "main": "dist/index.js",
     "typings": "dist/index.d.ts",

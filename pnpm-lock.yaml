@@ -100,7 +100,7 @@ importers:
       '@babel/core': ^7.14.3
       '@babel/plugin-proposal-class-properties': ^7.13.0
       '@babel/preset-env': ^7.14.4
-      '@gaopeng123/error-page': ^0.5.1
+      '@gaopeng123/error-page': ^0.5.2
       '@gaopeng123/utils.function': latest
       '@gaopeng123/utils.types': latest
       '@rollup/plugin-image': ^2.1.1
