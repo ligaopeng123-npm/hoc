@@ -1,4 +1,14 @@
-## 0.4.18 (2023-06-16)
+# [](https://github.com/ligaopeng123-npm/hoc/compare/v0.5.0...v) (2023-06-16)
+
+
+### Features
+
+* 使用lerna管理，拆分各个模块 ([9a1508e](https://github.com/ligaopeng123-npm/hoc/commit/9a1508e825df17e5672b4be965ddcedd6629f223))
+* 使用lerna管理，拆分各个模块2 ([371dc73](https://github.com/ligaopeng123-npm/hoc/commit/371dc73e22138ece1f2c9886f96e054e7f8b8c4d))
+
+
+
+# [0.5.0](https://github.com/ligaopeng123-npm/hoc/compare/0489469b803be293dd9364e2a37f82ee6b2a4113...v0.5.0) (2023-06-16)
 
 
 ### Bug Fixes
@@ -14,6 +24,7 @@
 ### Features
 
 * changelog支持 ([0489469](https://github.com/ligaopeng123-npm/hoc/commit/0489469b803be293dd9364e2a37f82ee6b2a4113))
+* 使用lerna管理 ([b34f0bc](https://github.com/ligaopeng123-npm/hoc/commit/b34f0bcefe301cf37b1c68630606c32cc2f03436))
 * 输出changelog ([9afbb4d](https://github.com/ligaopeng123-npm/hoc/commit/9afbb4d389281cf2d9e73dcbe04f53cec91919f0))
 
 
