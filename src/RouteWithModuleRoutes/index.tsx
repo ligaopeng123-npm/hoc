@@ -9,14 +9,30 @@
  * @date: 2021/7/30 8:14
  *
  **********************************************************************/
-import React, { useState, useEffect } from 'react';
-import { RouteProps, useLocation } from "react-router-dom";
-import RouteWithChildrenSubRoutes from "../RouteWithChildrenSubRoutes";
-import KeepAlive, { useAliveController, AliveScope } from 'react-activation';
-import { keepAliveType, RouteWithModuleRoutesProps, RrefetchRoute, SingleRouterProps } from "../typing";
+import React, {
+    useState,
+    useEffect
+} from 'react';
+import {
+    RouteProps,
+    useLocation
+} from "react-router-dom";
+import RouteWithChildrenSubRoutes
+    from "../RouteWithChildrenSubRoutes";
+import KeepAlive, {
+    useAliveController,
+    AliveScope
+} from 'react-activation';
+import {
+    keepAliveType,
+    RouteWithModuleRoutesProps,
+    RrefetchRoute,
+    SingleRouterProps
+} from "../typing";
 import { cacheRouter } from "../addWebpackAliasPath";
 import { PrefetchLazyComponent } from "../Prefetch";
-import TopBarLoading from '../TopBarLoading';
+import TopBarLoading
+    from '../TopBarLoading';
 import "../Error/ErrorComponents";
 import "../Error/LoadingComponents";
 
@@ -24,13 +40,22 @@ import "../Error/LoadingComponents";
  * 缓存路由
  * @constructor
  */
-const KeepAliveRouter = ({router, loading, isVite, keepAlive, loadingColor}: SingleRouterProps) => {
+const KeepAliveRouter = ({
+                             router,
+                             loading,
+                             isVite,
+                             keepAlive,
+                             loadingColor
+                         }: SingleRouterProps) => {
     return (
         <AliveScope>
             {
                 // when={keepAlive === 'auto' ? !router?.hideInMenu : true} 去掉when 走自动缓存配置
                 keepAlive === 'force' || (keepAlive === 'auto' && !router?.hideInMenu)
-                    ? <KeepAlive cacheKey={router?.path} id={router?.path}>
+                    ?
+                    <KeepAlive
+                        cacheKey={router?.path}
+                        id={router?.path}>
                         <RouteWithChildrenSubRoutes
                             keepAlive={keepAlive as keepAliveType}
                             {...router}
@@ -39,7 +64,8 @@ const KeepAliveRouter = ({router, loading, isVite, keepAlive, loadingColor}: Sin
                             loadingColor={loadingColor}
                         />
                     </KeepAlive>
-                    : <RouteWithChildrenSubRoutes
+                    :
+                    <RouteWithChildrenSubRoutes
                         keepAlive={keepAlive as keepAliveType}
                         {...router}
                         loading={loading}
@@ -52,7 +78,15 @@ const KeepAliveRouter = ({router, loading, isVite, keepAlive, loadingColor}: Sin
 }
 
 const RouteWithModuleRoutes: React.FC<RouteWithModuleRoutesProps> = (props) => {
-    const {routers, onRouteChange, loading, loadingColor, isVite, keepAlive, uninstallKeepAliveKeys} = props;
+    const {
+        routers,
+        onRouteChange,
+        loading,
+        loadingColor,
+        isVite,
+        keepAlive,
+        uninstallKeepAliveKeys
+    } = props;
     /**
      * 当前加载路由
      */
@@ -73,7 +107,8 @@ const RouteWithModuleRoutes: React.FC<RouteWithModuleRoutesProps> = (props) => {
 
     useEffect(() => {
         if (pathname && pathname !== '/' && routers?.length) {
-            const route = cacheRouter(pathname, routers, isVite)[0];
+            const newRouters = JSON.parse(JSON.stringify(routers));
+            const route = cacheRouter(pathname, newRouters, isVite)[0];
             if (route) {
                 setLoadError('');
                 route && setRouter(route);
@@ -109,16 +144,22 @@ const RouteWithModuleRoutes: React.FC<RouteWithModuleRoutesProps> = (props) => {
                     ? <>
                         {
                             routers?.length
-                                ? <error-404></error-404>
-                                : <loading-component></loading-component>
+                                ?
+                                <error-404></error-404>
+                                :
+                                <loading-component></loading-component>
                         }
                     </>
                     : <>
-                        <TopBarLoading color={loadingColor} pathname={pathname}/>
-                        <div attr-hoc={'hoc-main'}>
+                        <TopBarLoading
+                            color={loadingColor}
+                            pathname={pathname}/>
+                        <div
+                            attr-hoc={'hoc-main'}>
                             {
                                 _keepAlive !== 'not'
-                                    ? <KeepAliveRouter
+                                    ?
+                                    <KeepAliveRouter
                                         keepAlive={_keepAlive as keepAliveType}
                                         router={router}
                                         loading={loading}
@@ -126,7 +167,8 @@ const RouteWithModuleRoutes: React.FC<RouteWithModuleRoutesProps> = (props) => {
                                         loadError={loadError}
                                         isVite={isVite}
                                     />
-                                    : <RouteWithChildrenSubRoutes
+                                    :
+                                    <RouteWithChildrenSubRoutes
                                         keepAlive={_keepAlive as keepAliveType}
                                         {...router}
                                         loading={loading}
