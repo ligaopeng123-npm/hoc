@@ -24,8 +24,8 @@ specifiers:
   typescript: ^4.3.5
 
 dependencies:
-  '@gaopeng123/utils.function': 1.1.2
-  '@gaopeng123/utils.types': 1.1.0
+  '@gaopeng123/utils.function': 1.1.7
+  '@gaopeng123/utils.types': 1.1.7
   history: 5.3.0
   react-activation: 0.11.2_react@17.0.2
   react-load-script: 0.0.6_react@17.0.2
@@ -1320,15 +1320,15 @@ packages:
     dev: true
     optional: true
 
-  /@gaopeng123/utils.function/1.1.2:
-    resolution: {integrity: sha512-36GLe8wT6GFu7oS7uBbPeVxHn/DRv+Bj5Kqr21twAUZp4vLsGFr1VHGy2auA8kAMlkdxR+BrpThnB6wLhGYOgA==}
+  /@gaopeng123/utils.function/1.1.7:
+    resolution: {integrity: sha512-DuR/azOtJSFwctJRGqRaYr7rWVz8200SnYs5mpAKQNeznONsNdyWJyYOiRsrZMpmV/IXPOrniZOV3/U/a/NVMw==}
     engines: {node: '>=10'}
     dependencies:
-      '@gaopeng123/utils.types': 1.1.0
+      '@gaopeng123/utils.types': 1.1.7
     dev: false
 
-  /@gaopeng123/utils.types/1.1.0:
-    resolution: {integrity: sha512-q7POU7YCMc0sy4IJrGeci1UvEjFmjQnXfFXdI7KWdjeIrDJjMo36x1m5tUyqLvPgQZzv/U98P6WUB2tQW5W93A==}
+  /@gaopeng123/utils.types/1.1.7:
+    resolution: {integrity: sha512-9Lc3fk3ST+uaPJoxu5xKO4CXefgLTAZa+dODDOChZX//QGF8LrseWx1x589PO4phonb2f+Uaj3Q/U+DvOTGUSQ==}
     engines: {node: '>=10'}
     dev: false
 
@@ -4861,7 +4861,7 @@ packages:
     resolution: {integrity: sha512-oWb1Z6mkHIskLzEJ/XWX0srkpkTQ7vaopMQkyaEIoq0fmtFVxOthb8cCxeT+p3ynTdkk/RZwbgG4brR5BeWECw==}
     engines: {node: '>= 4.0'}
     os: [darwin]
-    deprecated: fsevents 1 will break on node v14+ and could be using insecure binaries. Upgrade to fsevents 2.
+    deprecated: The v1 package contains DANGEROUS / INSECURE binaries. Upgrade to safe fsevents v2
     requiresBuild: true
     dependencies:
       bindings: 1.5.0
