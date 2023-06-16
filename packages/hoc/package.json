@@ -100,7 +100,7 @@
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
-    "@gaopeng123/error-page": "workspace:^0.5.0",
+    "@gaopeng123/error-page": "^0.4.18",
     "@gaopeng123/utils.function": "latest",
     "@gaopeng123/utils.types": "latest",
     "history": "^5.3.0",
@@ -113,5 +113,6 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
-  }
+  },
+  "gitHead": "bdf657312da74f01768f08af0df4b76216be99f9"
 }

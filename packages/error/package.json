@@ -68,5 +68,5 @@
         "webpack-dev-server": "^3.11.2",
         "webpack-merge": "^5.8.0"
     },
-    "gitHead": "c02fb6d849463cfc60185d0d8eaa9ca5c93b04f0"
+    "gitHead": "bdf657312da74f01768f08af0df4b76216be99f9"
 }
