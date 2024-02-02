@@ -9,15 +9,15 @@
  * @date: 2021/8/2 18:20
  *
  **********************************************************************/
-import {RouteProps} from "react-router-dom";
-import RouteWithChildrenSubRoutes from "../RouteWithChildrenSubRoutes";
+import { RouteProps } from "react-router-dom";
+import { RouteWithChildrenSubRoutes } from "../RouteWithChildrenSubRoutes";
 
 export declare type RouteWithSubRoutesProps = {
     router: RouteProps;
 }
-const RouteWithSubRoutes = (props: RouteWithSubRoutesProps) => {
+export const RouteWithSubRoutes = (props: RouteWithSubRoutesProps) => {
     // @ts-ignore
-    const {router} = props;
+    const { router } = props;
     if (router.children) {
         const children = (router.children as Array<RouteProps>).map((item: RouteProps) => {
             return RouteWithChildrenSubRoutes(item);
@@ -27,4 +27,3 @@ const RouteWithSubRoutes = (props: RouteWithSubRoutesProps) => {
         return RouteWithChildrenSubRoutes(router);
     }
 };
-export default RouteWithSubRoutes;

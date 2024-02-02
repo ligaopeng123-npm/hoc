@@ -15,7 +15,7 @@ export type DynamicLoadScriptProps = {
 	onCreate?: (...args: any) => any;
 }
 
-const DynamicLoadScript: React.FC<DynamicLoadScriptProps> = (props) => {
+export const DynamicLoadScript: React.FC<DynamicLoadScriptProps> = (props) => {
 	const {onLoad, onCreate, onError, url} = props;
 	const [loadedBase, setLoadedBase] = useState<any>({});
 	const Url = typeof url === 'string' ? [url] : url;
@@ -66,5 +66,3 @@ const DynamicLoadScript: React.FC<DynamicLoadScriptProps> = (props) => {
 	)
 	
 };
-
-export default DynamicLoadScript;

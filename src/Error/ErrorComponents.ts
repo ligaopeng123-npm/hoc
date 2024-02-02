@@ -9,7 +9,7 @@
  * @版权所有: pgli
  *
  ********************************************************************* */
-class ErrorComponents extends HTMLElement {
+export class ErrorComponents extends HTMLElement {
     shadow: any = null;
 
     constructor() {
@@ -69,6 +69,19 @@ class ErrorComponents extends HTMLElement {
         }, 1000);
     }
 
+    /**
+     * 错误内容
+     */
+    getContent() {
+        return `
+            <h1>404</h1>
+            <h2>抱歉，您无权访问此页面或者您访问的页面不存在</h2>
+            <p>
+                Sorry, you do not have permission to visit this page or the page you are visiting does not exist.
+                But you can click the button below to go back to the homepage.
+            </p>
+        `
+    }
     template() {
         return `
             <style>
@@ -409,13 +422,7 @@ class ErrorComponents extends HTMLElement {
             </svg>
         </div>
         <div class="col-md-6 align-self-center">
-            <h1>404</h1>
-            <h2>您访问的页面不存在</h2>
-            <p>
-                The page you are looking for does not exist.
-                How you got here is a mystery. But you can click the button below
-                to go back to the homepage.
-            </p>
+            ${this.getContent()}
             <span id="seconds">5</span> 
              秒后返回
              <button id="button" class="btn green">首页</button>
@@ -430,7 +437,4 @@ class ErrorComponents extends HTMLElement {
 if (!customElements.get('error-404')) {
     customElements.define('error-404', ErrorComponents);
 }
-
-export default ErrorComponents;
-
 

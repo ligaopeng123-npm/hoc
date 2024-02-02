@@ -9,15 +9,16 @@
  * @版权所有: pgli
  *
  ********************************************************************* */
-import {RouteProps} from "react-router";
+import { RouteProps } from "react-router-dom";
 
 type ChangeRouteTitle = {
     name?: string;
 } & RouteProps;
-const changeRouteTitle = (routes: Array<ChangeRouteTitle>, baseName?: string) => {
-    if (routes?.length) {
-        const routeEnum: any = {};
-        const hashChange = () => {
+
+export const changeRouteTitle = (routes: Array<ChangeRouteTitle>, baseName?: string, callBack?: (hash: string) => void) => {
+    const hashChange = () => {
+        if (routes?.length) {
+            const routeEnum: any = {};
             if (routeEnum[location.hash]) {
                 document.title = routeEnum[location.hash];
             } else {
@@ -30,8 +31,7 @@ const changeRouteTitle = (routes: Array<ChangeRouteTitle>, baseName?: string) =>
                 }
             }
         }
-        window.addEventListener('hashchange', hashChange);
+        callBack && callBack(location.hash.replace('#', ''));
     }
+    window.addEventListener('hashchange', hashChange);
 }
-
-export default changeRouteTitle;

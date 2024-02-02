@@ -9,89 +9,175 @@
  * @date: 2021/7/30 8:14
  *
  **********************************************************************/
-import React, { useState, useEffect, Fragment, ReactNode } from 'react';
-import { RouteProps, useLocation } from "react-router-dom";
-import { memoized, MemoizedFn } from "@gaopeng123/utils.function";
-import Prefetch from '../Prefetch';
-import RouteWithChildrenSubRoutes from "../RouteWithChildrenSubRoutes";
-import { RrefetchRoute } from "../typing";
+import React, {
+    useState,
+    useEffect
+} from 'react';
+import {
+    RouteProps,
+    useLocation
+} from "react-router-dom";
+import { RouteWithChildrenSubRoutes }
+    from "../RouteWithChildrenSubRoutes";
+import KeepAlive, {
+    useAliveController,
+    AliveScope
+} from 'react-activation';
+import {
+    keepAliveType,
+    RouteWithModuleRoutesProps,
+    RrefetchRoute,
+    SingleRouterProps
+} from "../typing";
+import { cacheRouter } from "../addWebpackAliasPath";
+import { PrefetchLazyComponent } from "../Prefetch";
+import { TopBarLoading }
+    from '../TopBarLoading';
 import "../Error/ErrorComponents";
-
-/**
- * 递归匹配路由
- * @param routers
- * @param pathname
- */
-const pathnameFromRouters: MemoizedFn = (pathname: string, routers: Array<any>, isVite?: boolean) => {
-    if (routers) {
-        for (let route of routers) {
-            // @ts-ignore
-            const { path } = route;
-            // @ts-ignore
-            const children = route?.children || route?.routes;
-            if (path === pathname) {
-                /**
-                 * 预加载策略 将同级路由和当前子级路由全部加载
-                 */
-                !isVite && Prefetch(routers.filter((r) => route !== r).concat(children || []));
-                return route;
-            } else {
-                const state: any = pathnameFromRouters(pathname, children, isVite);
-                if (state) return state;
-            }
-        }
-    }
-};
+import "../Error/LoadingComponents";
 
 /**
  * 缓存路由
+ * @constructor
  */
-const cacheRouter = memoized(pathnameFromRouters);
-/**
- * 暴露入口
- */
-export declare type RouteWithModuleRoutesProps = {
-    routers: any[];
-    onRouteChange?: (route: RouteProps & RrefetchRoute) => void;
-    isVite?: boolean; // 是否使用vite模式
-    loading?: boolean | ReactNode; // 是否使用loading效果  false不使用 true使用默认的 也可传递组件
+const KeepAliveRouter = ({
+                             router,
+                             loading,
+                             isVite,
+                             keepAlive,
+                             loadingColor
+                         }: SingleRouterProps) => {
+    return (
+        <AliveScope>
+            {
+                // when={keepAlive === 'auto' ? !router?.hideInMenu : true} 去掉when 走自动缓存配置
+                keepAlive === 'force' || (keepAlive === 'auto' && !router?.hideInMenu)
+                    ?
+                    <KeepAlive
+                        cacheKey={router?.path as string}
+                        id={router?.path as string}>
+                        <RouteWithChildrenSubRoutes
+                            keepAlive={keepAlive as keepAliveType}
+                            {...router}
+                            loading={loading}
+                            isVite={isVite}
+                            loadingColor={loadingColor}
+                        />
+                    </KeepAlive>
+                    :
+                    <RouteWithChildrenSubRoutes
+                        keepAlive={keepAlive as keepAliveType}
+                        {...router}
+                        loading={loading}
+                        isVite={isVite}
+                        loadingColor={loadingColor}
+                    />
+            }
+        </AliveScope>
+    )
 }
 
-const RouteWithModuleRoutes: React.FC<RouteWithModuleRoutesProps> = (props) => {
+export const RouteWithModuleRoutes: React.FC<RouteWithModuleRoutesProps> = (props) => {
+    const {
+        routers,
+        onRouteChange,
+        loading,
+        loadingColor,
+        isVite,
+        keepAlive,
+        uninstallKeepAliveKeys
+    } = props;
+    /**
+     * 当前加载路由
+     */
     const [router, setRouter] = useState<RouteProps & RrefetchRoute>();
-    const [canLoaded, setCanLoaded] = useState(true);
-    const { routers, onRouteChange } = props;
+    /**
+     * 加载错误状态
+     */
+    const [loadError, setLoadError] = useState<any>(loading === true ? 'loading' : loading);
     const location = useLocation();
+    /**
+     * 获取参数
+     */
     const pathname = location.pathname;
-    const isVite = props.isVite;
-    const loading = props.loading;
+    /**
+     * 缓存模式
+     */
+    const _keepAlive: keepAliveType = keepAlive || 'not';
+
     useEffect(() => {
-        if (pathname && pathname !== '/') {
+        if (pathname && pathname !== '/' && routers?.length) {
             const route = cacheRouter(pathname, routers, isVite)[0];
             if (route) {
-                setRouter(route);
-                onRouteChange && onRouteChange(route);
-                setCanLoaded(true);
+                setLoadError('');
+                route && setRouter(route);
+                route && onRouteChange && onRouteChange(route);
             } else {
-                setCanLoaded(false);
+                setLoadError('页面加载失败 404!');
             }
         }
     }, [pathname, routers]);
+    /**
+     * 缓存清理
+     */
+    const { drop } = useAliveController();
+    /**
+     * 监听卸载菜单 如果需要卸载 则清理缓存
+     */
+    useEffect(() => {
+        if (uninstallKeepAliveKeys?.length && keepAlive !== 'not') {
+            for (const uninstallKeepAliveKey of uninstallKeepAliveKeys) {
+                // 防止未使用缓存时 同时又设置了uninstallKeepAliveKey导致的问题
+                if (drop) {
+                    drop(uninstallKeepAliveKey);
+                }
+                PrefetchLazyComponent.del(uninstallKeepAliveKey)
+            }
+        }
+    }, [uninstallKeepAliveKeys]);
 
     return (
-        <Fragment>
+        <>
             {
-                router
-                    ? <RouteWithChildrenSubRoutes {...router} loading={loading} isVite={isVite}/>
-                    : <>
+                !router
+                    ? <>
                         {
-                            canLoaded
-                                ? loading || <span>加载中...</span>
-                                : <error-404></error-404>
+                            routers?.length
+                                ?
+                                <error-404></error-404>
+                                :
+                                <loading-component></loading-component>
                         }
                     </>
+                    : <>
+                        <TopBarLoading
+                            color={loadingColor}
+                            pathname={pathname}/>
+                        <div
+                            attr-hoc={'hoc-main'}>
+                            {
+                                _keepAlive !== 'not'
+                                    ?
+                                    <KeepAliveRouter
+                                        keepAlive={_keepAlive as keepAliveType}
+                                        router={router}
+                                        loading={loading}
+                                        loadingColor={loadingColor}
+                                        loadError={loadError}
+                                        isVite={isVite}
+                                    />
+                                    :
+                                    <RouteWithChildrenSubRoutes
+                                        keepAlive={_keepAlive as keepAliveType}
+                                        {...router}
+                                        loading={loading}
+                                        loadingColor={loadingColor}
+                                        isVite={isVite}
+                                    />
+                            }
+                        </div>
+                    </>
             }
-        </Fragment>
+        </>
     )
 };
-export default RouteWithModuleRoutes;

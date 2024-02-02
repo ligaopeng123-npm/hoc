@@ -1,12 +1,12 @@
 {
-    "version": "0.2.13",
+    "version": "0.2.15",
     "license": "MIT",
     "main": "dist/index.js",
+    "module": "dist/hoc.esm.js",
     "typings": "dist/index.d.ts",
     "private": false,
     "files": [
-        "dist",
-        "src"
+        "dist"
     ],
     "engines": {
         "node": ">=10"
@@ -54,6 +54,7 @@
     ],
     "devDependencies": {
         "@size-limit/preset-small-lib": "^5.0.1",
+        "@types/history": "^4.7.11",
         "@types/react": "^17.0.15",
         "@types/react-dom": "^17.0.9",
         "@types/react-router-dom": "^5.1.8",
@@ -68,8 +69,10 @@
     "dependencies": {
         "@gaopeng123/utils.function": "latest",
         "@gaopeng123/utils.types": "latest",
+        "history": "^4.10.1",
+        "react-activation": "^0.12.4",
         "react-load-script": "^0.0.6",
         "react-router-dom": "^5.3.1",
-        "history": "^4.10.1"
+        "react-top-loading-bar": "^2.3.1"
     }
 }
